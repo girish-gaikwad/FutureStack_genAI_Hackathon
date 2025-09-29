@@ -3,7 +3,7 @@ import { useState } from "react"
 import { User, Globe, HelpCircle, Crown, BookOpen, LogOut, ChevronRight } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
-export default function SettingsPopover({ children }) {
+export default function SettingsPopovers({ children }) {
   const [open, setOpen] = useState(false)
 
   return (

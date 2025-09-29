@@ -7,7 +7,7 @@ export default function SidebarSection({ icon, title, children, collapsed, onTog
     <section>
       <button
         onClick={onToggle}
-        className="sticky top-0 z-10 -mx-2 mb-1 flex w-[calc(100%+16px)] items-center gap-2 border-y border-transparent bg-gradient-to-b from-white to-white/70 px-2 py-2 text-[11px] font-semibold tracking-wide text-zinc-500 backdrop-blur hover:text-zinc-700 dark:from-zinc-900 dark:to-zinc-900/70 dark:hover:text-zinc-300"
+        className="sticky top-0 z-10 -mx-2 mb-1 flex w-[calc(100%+16px)] hover:bg-secondary rounded-xl items-center gap-2 border-y border-transparent px-2 py-2 text-[11px] font-semibold tracking-wide text-zinc-500 backdrop-blur hover:text-zinc-700 dark:from-zinc-900 dark:to-zinc-900/70 dark:hover:text-zinc-300"
         aria-expanded={!collapsed}
       >
         <span className="mr-1" aria-hidden>

@@ -1,83 +1,94 @@
-"use client"
+"use client";
 
-import { useRef, useState, forwardRef, useImperativeHandle, useEffect } from "react"
-import { Send, Loader2, Plus, Mic } from "lucide-react"
-import ComposerActionsPopover from "./ComposerActionsPopover"
-import { cls } from "./utils"
+import {
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+} from "react";
+import { Send, Loader2, Plus, Mic } from "lucide-react";
+import ComposerActionsPopover from "./ComposerActionsPopover";
+import { cls } from "./utils";
 
 const Composer = forwardRef(function Composer({ onSend, busy }, ref) {
-  const [value, setValue] = useState("")
-  const [sending, setSending] = useState(false)
-  const [isFocused, setIsFocused] = useState(false)
-  const [lineCount, setLineCount] = useState(1)
-  const inputRef = useRef(null)
+  const [value, setValue] = useState("");
+  const [sending, setSending] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [lineCount, setLineCount] = useState(1);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (inputRef.current) {
-      const textarea = inputRef.current
-      const lineHeight = 20 // Approximate line height in pixels
-      const minHeight = 40
+      const textarea = inputRef.current;
+      const lineHeight = 20; // Approximate line height in pixels
+      const minHeight = 40;
 
       // Reset height to calculate scroll height
-      textarea.style.height = "auto"
-      const scrollHeight = textarea.scrollHeight
-      const calculatedLines = Math.max(1, Math.floor((scrollHeight - 16) / lineHeight)) // 16px for padding
+      textarea.style.height = "auto";
+      const scrollHeight = textarea.scrollHeight;
+      const calculatedLines = Math.max(
+        1,
+        Math.floor((scrollHeight - 16) / lineHeight)
+      ); // 16px for padding
 
-      setLineCount(calculatedLines)
+      setLineCount(calculatedLines);
 
       if (calculatedLines <= 12) {
         // Auto-expand for 1-12 lines
-        textarea.style.height = `${Math.max(minHeight, scrollHeight)}px`
-        textarea.style.overflowY = "hidden"
+        textarea.style.height = `${Math.max(minHeight, scrollHeight)}px`;
+        textarea.style.overflowY = "hidden";
       } else {
         // Fixed height with scroll for 12+ lines
-        textarea.style.height = `${minHeight + 11 * lineHeight}px` // 12 lines total
-        textarea.style.overflowY = "auto"
+        textarea.style.height = `${minHeight + 11 * lineHeight}px`; // 12 lines total
+        textarea.style.overflowY = "auto";
       }
     }
-  }, [value])
+  }, [value]);
 
   useImperativeHandle(
     ref,
     () => ({
       insertTemplate: (templateContent) => {
         setValue((prev) => {
-          const newValue = prev ? `${prev}\n\n${templateContent}` : templateContent
+          const newValue = prev
+            ? `${prev}\n\n${templateContent}`
+            : templateContent;
           setTimeout(() => {
-            inputRef.current?.focus()
-            const length = newValue.length
-            inputRef.current?.setSelectionRange(length, length)
-          }, 0)
-          return newValue
-        })
+            inputRef.current?.focus();
+            const length = newValue.length;
+            inputRef.current?.setSelectionRange(length, length);
+          }, 0);
+          return newValue;
+        });
       },
       focus: () => {
-        inputRef.current?.focus()
+        inputRef.current?.focus();
       },
     }),
-    [],
-  )
+    []
+  );
 
   async function handleSend() {
-    if (!value.trim() || sending) return
-    setSending(true)
+    if (!value.trim() || sending) return;
+    setSending(true);
     try {
-      await onSend?.(value)
-      setValue("")
-      inputRef.current?.focus()
+      await onSend?.(value);
+      setValue("");
+      inputRef.current?.focus();
     } finally {
-      setSending(false)
+      setSending(false);
     }
   }
 
-  const hasContent = value.length > 0
+  const hasContent = value.length > 0;
 
   return (
     <div className="border-t border-zinc-200/60 p-4 dark:border-zinc-800">
       <div
         className={cls(
-          "mx-auto flex flex-col rounded-2xl border bg-white shadow-sm dark:bg-zinc-950 transition-all duration-200",
-          "max-w-3xl border-zinc-300 dark:border-zinc-700 p-3",
+          "mx-auto flex flex-col rounded-2xl border bg-background  shadow-2xl transition-all duration-200",
+          "max-w-3xl border-zinc-300 dark:border-zinc-700 p-3"
         )}
       >
         <div className="flex-1 relative">
@@ -91,7 +102,7 @@ const Composer = forwardRef(function Composer({ onSend, busy }, ref) {
             rows={1}
             className={cls(
               "w-full resize-none bg-transparent text-sm outline-none placeholder:text-zinc-400 transition-all duration-200",
-              "px-0 py-2 min-h-[40px] text-left",
+              "px-0 py-2 min-h-[40px] text-left"
             )}
             style={{
               height: "auto",
@@ -99,8 +110,8 @@ const Composer = forwardRef(function Composer({ onSend, busy }, ref) {
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                handleSend()
+                e.preventDefault();
+                handleSend();
               }
             }}
           />
@@ -128,10 +139,15 @@ const Composer = forwardRef(function Composer({ onSend, busy }, ref) {
               disabled={sending || busy || !value.trim()}
               className={cls(
                 "inline-flex shrink-0 items-center gap-2 rounded-full bg-zinc-900 px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:bg-white dark:text-zinc-900",
-                (sending || busy || !value.trim()) && "opacity-50 cursor-not-allowed",
+                (sending || busy || !value.trim()) &&
+                  "opacity-50 cursor-not-allowed"
               )}
             >
-              {sending || busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {sending || busy ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
             </button>
           </div>
         </div>
@@ -153,7 +169,7 @@ const Composer = forwardRef(function Composer({ onSend, busy }, ref) {
         for newline
       </div>
     </div>
-  )
-})
+  );
+});
 
-export default Composer
+export default Composer;

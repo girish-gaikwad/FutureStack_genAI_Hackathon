@@ -1,35 +1,32 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  PanelLeftClose,
-  PanelLeftOpen,
-  SearchIcon,
-  Plus,
-  Star,
-  Clock,
-  FolderIcon,
-  FileText,
-  Settings,
   Asterisk,
+  Clock,
+  FileText,
+  FolderIcon,
+  PanelLeftClose,
   PanelRightOpen,
+  Plus,
+  SearchIcon,
+  Settings,
+  Star,
 } from "lucide-react";
-import SidebarSection from "./SidebarSection";
+import { useState } from "react";
+import { ModeToggle } from "../modeToggle";
 import ConversationRow from "./ConversationRow";
-import FolderRow from "./FolderRow";
-import TemplateRow from "./TemplateRow";
-import ThemeToggle from "./ThemeToggle";
 import CreateFolderModal from "./CreateFolderModal";
 import CreateTemplateModal from "./CreateTemplateModal";
+import FolderRow from "./FolderRow";
 import SearchModal from "./SearchModal";
-import SettingsPopover from "./SettingsPopover";
+import SidebarSection from "./SidebarSection";
+import TemplateRow from "./TemplateRow";
 import { cls } from "./utils";
-import { useState } from "react";
+import Image from "next/image";
 
 export default function Sidebar({
   open,
   onClose,
-  theme,
-  setTheme,
   collapsed,
   setCollapsed,
   conversations,
@@ -46,10 +43,10 @@ export default function Sidebar({
   createFolder,
   createNewChat,
   templates = [],
-  setTemplates = () => {},
-  onUseTemplate = () => {},
+  setTemplates = () => { },
+  onUseTemplate = () => { },
   sidebarCollapsed = false,
-  setSidebarCollapsed = () => {},
+  setSidebarCollapsed = () => { },
 }) {
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const [showCreateTemplateModal, setShowCreateTemplateModal] = useState(false);
@@ -138,7 +135,7 @@ export default function Sidebar({
         initial={{ width: 320 }}
         animate={{ width: 64 }}
         transition={{ type: "spring", stiffness: 260, damping: 28 }}
-        className="z-50 flex h-full shrink-0 flex-col border-r border-zinc-200/60 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+        className="z-50 flex h-full shrink-0 flex-col border-r border-zinc-200/60" style={{ background: 'var(--background)' }}
       >
         <div className="flex items-center justify-center border-b border-zinc-200/60 px-3 py-3 dark:border-zinc-800">
           <button
@@ -174,17 +171,6 @@ export default function Sidebar({
           >
             <FolderIcon className="h-5 w-5" />
           </button>
-
-          <div className="mt-auto mb-4">
-            <SettingsPopover>
-              <button
-                className="rounded-xl p-2 hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-zinc-800"
-                title="Settings"
-              >
-                <Settings className="h-5 w-5" />
-              </button>
-            </SettingsPopover>
-          </div>
         </div>
       </motion.aside>
     );
@@ -209,19 +195,24 @@ export default function Sidebar({
         {(open || typeof window !== "undefined") && (
           <motion.aside
             key="sidebar"
-            initial={{ x: -340 }}
+            initial={{ x: 340 }}
             animate={{ x: open ? 0 : 0 }}
             exit={{ x: -340 }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
             className={cls(
-              "z-50 flex h-full w-80 shrink-0 flex-col border-r border-zinc-200/60 bg-white dark:border-zinc-800 dark:bg-zinc-900",
-              "fixed inset-y-0 left-0 md:static md:translate-x-0"
+              "z-50 flex h-full w-80 border-l border-gray-20 shrink-0 flex-col border-r bg-background fixed inset-y-0 right-0 md:static md:translate-x-0"
             )}
+          // style={{ background: 'var(--background)' }}
           >
             <div className="flex items-center gap-2 border-b border-zinc-200/60 px-3 py-3 dark:border-zinc-800">
               <div className="flex items-center gap-2">
-                <div className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-sm dark:from-zinc-200 dark:to-zinc-300 dark:text-zinc-900">
-                  <Asterisk className="h-4 w-4" />
+                <div className="grid h-8 w-8 place-items-center rounded-xl ">
+                  <Image
+                    src="/logo.png"
+                    alt="AI Assistant"
+                    width={32}
+                    height={32}
+                  />
                 </div>
                 <div className="text-sm font-semibold tracking-tight">
                   AI Assistant
@@ -277,7 +268,7 @@ export default function Sidebar({
               </button>
             </div>
 
-            <nav className="mt-4 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-2 pb-4">
+            <nav className="mt-4 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4 pb-4">
               <SidebarSection
                 icon={<Star className="h-4 w-4" />}
                 title="PINNED CHATS" // Renamed from "PINNED CONVERSATIONS" to "PINNED CHATS"
@@ -398,30 +389,6 @@ export default function Sidebar({
                 </div>
               </SidebarSection>
             </nav>
-
-            <div className="mt-auto border-t border-zinc-200/60 px-3 py-3 dark:border-zinc-800">
-              <div className="flex items-center gap-2">
-                <SettingsPopover>
-                  <button className="inline-flex items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-zinc-800">
-                    <Settings className="h-4 w-4" /> Settings
-                  </button>
-                </SettingsPopover>
-                <div className="ml-auto">
-                  <ThemeToggle theme={theme} setTheme={setTheme} />
-                </div>
-              </div>
-              <div className="mt-2 flex items-center gap-2 rounded-xl bg-zinc-50 p-2 dark:bg-zinc-800/60">
-                <div className="grid h-8 w-8 place-items-center rounded-full bg-zinc-900 text-xs font-bold text-white dark:bg-white dark:text-zinc-900">
-                  JD
-                </div>
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-medium">John Doe</div>
-                  <div className="truncate text-xs text-zinc-500 dark:text-zinc-400">
-                    Pro workspace
-                  </div>
-                </div>
-              </div>
-            </div>
           </motion.aside>
         )}
       </AnimatePresence>
