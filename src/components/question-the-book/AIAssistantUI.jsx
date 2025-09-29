@@ -266,7 +266,23 @@ export default function AIAssistantUI() {
       </div>
 
       <div className="mx-auto flex h-[calc(100vh-0px)] max-w-[1400px]">
-        <Sidebar
+       
+
+        <main className="relative flex min-w-0 flex-1 flex-col">
+          <Header createNewChat={createNewChat} sidebarCollapsed={sidebarCollapsed} setSidebarOpen={setSidebarOpen} />
+          <ChatPane
+            ref={composerRef}
+            conversation={selected}
+            onSend={(content) => selected && sendMessage(selected.id, content)}
+            onEditMessage={(messageId, newContent) => selected && editMessage(selected.id, messageId, newContent)}
+            onResendMessage={(messageId) => selected && resendMessage(selected.id, messageId)}
+            isThinking={isThinking && thinkingConvId === selected?.id}
+            onPauseThinking={pauseThinking}
+          />
+        </main>
+
+
+         <Sidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
           theme={theme}
@@ -292,19 +308,6 @@ export default function AIAssistantUI() {
           setTemplates={setTemplates}
           onUseTemplate={handleUseTemplate}
         />
-
-        <main className="relative flex min-w-0 flex-1 flex-col">
-          <Header createNewChat={createNewChat} sidebarCollapsed={sidebarCollapsed} setSidebarOpen={setSidebarOpen} />
-          <ChatPane
-            ref={composerRef}
-            conversation={selected}
-            onSend={(content) => selected && sendMessage(selected.id, content)}
-            onEditMessage={(messageId, newContent) => selected && editMessage(selected.id, messageId, newContent)}
-            onResendMessage={(messageId) => selected && resendMessage(selected.id, messageId)}
-            isThinking={isThinking && thinkingConvId === selected?.id}
-            onPauseThinking={pauseThinking}
-          />
-        </main>
       </div>
     </div>
   )
