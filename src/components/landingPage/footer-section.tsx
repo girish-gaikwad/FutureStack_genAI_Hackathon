@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function FooterSection() {
@@ -8,15 +9,16 @@ export default function FooterSection() {
         <div className="h-auto p-4 md:p-8 flex flex-col justify-start items-start gap-8">
           {/* Brand Section */}
           <div className="self-stretch flex justify-start items-center gap-3">
-            <div className="text-center text-[#49423D] text-xl font-semibold leading-4 font-sans">
-              {process.env.NEXT_PUBLIC_Project || "SyllabusMate"}
+            <div className="flex items-center justify-center text-[#2F3037] text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-5 font-sans">
+              <Image src="/logo.png" alt="Logo" width={30} height={30} className="mr-2" />
+              {process.env.NEXT_PUBLIC_Project || "Brillance"}
             </div>
           </div>
           <div className="text-[rgba(73,66,61,0.90)] text-sm font-medium leading-[18px] font-sans">
             Your AI-powered study assistant grounded in official textbooks.
           </div>
 
-           {/* Social Media Icons */}
+          {/* Social Media Icons */}
           <div className="flex justify-start items-start gap-4">
             {/* Twitter/X Icon */}
             <a

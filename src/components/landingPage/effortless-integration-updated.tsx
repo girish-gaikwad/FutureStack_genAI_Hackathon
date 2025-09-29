@@ -1,3 +1,4 @@
+import Image from "next/image"
 import type React from "react"
 
 interface EffortlessIntegrationProps {
@@ -127,18 +128,18 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             color: "#ffffff",
           }}
         >
-          b
+          <Image src="/logo.png" alt="TutorAI" width={40} height={40} />
         </div>
 
-        {/* GitHub - 180° (left) */}
+        {/* CBse - 180° (left) */}
         <div
           style={{
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             left: `${getPositionOnRing(80, Math.PI).x - 16}px`,
             top: `${getPositionOnRing(80, Math.PI).y - 16}px`,
             position: "absolute",
-            background: "#000000",
+            // background: "#000000",
             boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
             borderRadius: "50%",
             display: "flex",
@@ -147,25 +148,25 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
           }}
         >
           <img
-            src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg"
-            alt="GitHub"
+            src="./boards/cbse.png"
+            alt="CBSE"
             style={{
-              width: "18px",
-              height: "18px",
-              filter: "brightness(0) invert(1)",
+              width: "38px",
+              height: "38px",
+              // filter: "brightness(0) invert(1)",
             }}
           />
         </div>
 
-        {/* Slack - 0° (right) */}
-        <div
+        {/* ICSE - 0° (right) */}
+         <div
           style={{
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             left: `${getPositionOnRing(80, 0).x - 16}px`,
             top: `${getPositionOnRing(80, 0).y - 16}px`,
             position: "absolute",
-            background: "#ffffff",
+            // background: "#000000",
             boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
             borderRadius: "50%",
             display: "flex",
@@ -174,20 +175,21 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
           }}
         >
           <img
-            src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/slack.svg"
-            alt="Slack"
+            src="./boards/ise.png"
+            alt="CBSE"
             style={{
-              width: "18px",
-              height: "18px",
+              width: "full",
+              height: "full",
+              // filter: "brightness(0) invert(1)",
             }}
           />
         </div>
 
-        {/* Figma - 315° (top-right) */}
+        {/* Cambridge - 315° (top-right) */}
         <div
           style={{
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             left: `${getPositionOnRing(120, -Math.PI / 4).x - 16}px`,
             top: `${getPositionOnRing(120, -Math.PI / 4).y - 16}px`,
             position: "absolute",
@@ -200,24 +202,24 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
           }}
         >
           <img
-            src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/figma.svg"
+            src="./boards/cambrige.png"
             alt="Figma"
             style={{
-              width: "16px",
-              height: "16px",
+              width: "40px",
+              height: "40px",
             }}
           />
         </div>
 
-        {/* Discord - 135° (bottom-left) */}
+        {/* TNBS - 135° (bottom-left) */}
         <div
           style={{
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             left: `${getPositionOnRing(120, (3 * Math.PI) / 4).x - 16}px`,
             top: `${getPositionOnRing(120, (3 * Math.PI) / 4).y - 16}px`,
             position: "absolute",
-            background: "#5865F2",
+            // background: "#5865F2",
             boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
             borderRadius: "50%",
             display: "flex",
@@ -226,21 +228,21 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
           }}
         >
           <img
-            src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg"
+            src="./boards/tnsb.png"
             alt="Discord"
             style={{
-              width: "18px",
-              height: "18px",
-              filter: "brightness(0) invert(1)",
+              width: "40px",
+              height: "40px",
+              // filter: "brightness(0) invert(1)",
             }}
           />
         </div>
 
-        {/* Notion - 225° (bottom-left diagonal) */}
+        {/* Chatgpt - 225° (bottom-left diagonal) */}
         <div
           style={{
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             left: `${getPositionOnRing(120, (5 * Math.PI) / 4).x - 16}px`,
             top: `${getPositionOnRing(120, (5 * Math.PI) / 4).y - 16}px`,
             position: "absolute",
@@ -253,24 +255,24 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
           }}
         >
           <img
-            src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/notion.svg"
+            src="./sponsors/meta.svg"
             alt="Notion"
             style={{
-              width: "18px",
-              height: "18px",
+              width: "40px",
+              height: "40px",
             }}
           />
         </div>
 
-        {/* Stripe - 180° (left) */}
+        {/* cerebras - 180° (left) */}
         <div
           style={{
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             left: `${getPositionOnRing(160, Math.PI).x - 16}px`,
             top: `${getPositionOnRing(160, Math.PI).y - 16}px`,
             position: "absolute",
-            background: "#635BFF",
+            // background: "#635BFF",
             boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
             borderRadius: "50%",
             display: "flex",
@@ -279,12 +281,12 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
           }}
         >
           <img
-            src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/stripe.svg"
+            src="./sponsors/cerebras.png"
             alt="Stripe"
             style={{
-              width: "18px",
-              height: "18px",
-              filter: "brightness(0) invert(1)",
+              width: "40px",
+              height: "40px",
+              // filter: "brightness(0) invert(1)",
             }}
           />
         </div>
@@ -292,8 +294,8 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
         {/* Framer - 0° (right) */}
         <div
           style={{
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             left: `${getPositionOnRing(160, 0).x - 16}px`,
             top: `${getPositionOnRing(160, 0).y - 16}px`,
             position: "absolute",
@@ -305,15 +307,10 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             justifyContent: "center",
           }}
         >
-          <img
-            src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/framer.svg"
-            alt="Framer"
-            style={{
-              width: "16px",
-              height: "16px",
-              filter: "brightness(0) invert(1)",
-            }}
-          />
+          <span className="text-white font-bold text-[24px] leading-[28px] font-sans">
+
+         AI
+          </span>
         </div>
 
         <svg

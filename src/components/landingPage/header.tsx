@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
 function Header() {
@@ -30,29 +31,34 @@ function Header() {
                     </div>
 
                     <div className="  pl-3 sm:pl-4 md:pl-5 lg:pl-5 justify-start items-start hidden sm:flex flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-4">
-                        <div className="flex justify-start items-center">
+                        <Link href="#syllabus" className="flex justify-start items-center">
                             <div className="flex flex-col justify-center text-[rgba(49,45,43,0.80)] text-xs md:text-[13px] font-medium leading-[14px] font-sans">
-                                Products
+                                Syllabus
                             </div>
-                        </div>
-                        <div className="flex justify-start items-center">
+                        </Link>
+                        <Link href="#features" className="flex justify-start items-center">
+                            <div className="flex flex-col justify-center text-[rgba(49,45,43,0.80)] text-xs md:text-[13px] font-medium leading-[14px] font-sans">
+                                Features
+                            </div>
+                        </Link>
+                        <Link href="#pricing" className="flex justify-start items-center">
                             <div className="flex flex-col justify-center text-[rgba(49,45,43,0.80)] text-xs md:text-[13px] font-medium leading-[14px] font-sans">
                                 Pricing
                             </div>
-                        </div>
-                        <div className="flex justify-start items-center">
+                        </Link>
+                        <Link href="#faqs" className="flex justify-start items-center">
                             <div className="flex flex-col justify-center text-[rgba(49,45,43,0.80)] text-xs md:text-[13px] font-medium leading-[14px] font-sans">
-                                Docs
+                                Faqs
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
                     <div className="h-6 sm:h-7 md:h-8 flex justify-start items-start gap-2 sm:gap-3">
-                        <div className="px-2 sm:px-3 md:px-[14px] py-1 sm:py-[6px] bg-white shadow-[0px_1px_2px_rgba(55,50,47,0.12)] overflow-hidden rounded-full flex justify-center items-center">
+                        <Link href="/login" className="px-2 sm:px-3 md:px-[14px] py-1 sm:py-[6px] bg-white shadow-[0px_1px_2px_rgba(55,50,47,0.12)] overflow-hidden rounded-full flex justify-center items-center">
                             <div className="flex flex-col justify-center text-[#37322F] text-xs md:text-[13px] font-medium leading-5 font-sans">
                                 Log in
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>

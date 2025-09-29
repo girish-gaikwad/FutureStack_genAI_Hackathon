@@ -1,3 +1,4 @@
+import { TrendingUp } from "lucide-react"
 import type React from "react"
 
 interface NumbersThatSpeakProps {
@@ -259,10 +260,10 @@ const NumbersThatSpeak: React.FC<NumbersThatSpeakProps> = ({
                               whiteSpace: "pre",
                             }}
                           >
-                            Invoiced Revenue
+                            Exam Scores
                           </div>
                           <div
-                            className="tracking-widest"
+                            className="tracking-widest flex"
                             style={{
                               fontFamily: "Inter, sans-serif",
                               fontWeight: 500,
@@ -273,7 +274,7 @@ const NumbersThatSpeak: React.FC<NumbersThatSpeakProps> = ({
                               whiteSpace: "pre",
                             }}
                           >
-                            $317,731.00
+                            Avg - 86% <TrendingUp className="text-green-500" />
                           </div>
                         </div>
                       </div>
@@ -341,7 +342,7 @@ const NumbersThatSpeak: React.FC<NumbersThatSpeakProps> = ({
                                     boxSizing: "border-box",
                                   }}
                                 >
-                                  {["500k", "300k", "200k", "100k", "0"].map((label, index) => (
+                                  {["100%", "80%", "60%", "40%", "0%"].map((label, index) => (
                                     <div
                                       key={index}
                                       style={{

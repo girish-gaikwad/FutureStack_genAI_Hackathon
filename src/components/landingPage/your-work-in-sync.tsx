@@ -1,20 +1,15 @@
 import type React from "react"
 
 interface YourWorkInSyncProps {
-  /** Fixed width from Figma: 482px */
   width?: number | string
-  /** Fixed height from Figma: 300px */
   height?: number | string
-  /** Optional className to pass to root */
   className?: string
-  /** Theme palette */
   theme?: "light" | "dark"
 }
 
 /**
- * Your work, in sync – Chat conversation UI
- * Generated from Figma via MCP with exact measurements (482×300px)
- * Single-file component following the v0-ready pattern used in this repo.
+ * Your work, in sync – repurposed as "Your Learning, in Sync"
+ * Chat conversation UI for AI Tutor app
  */
 const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
   width = 482,
@@ -22,7 +17,6 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
   className = "",
   theme = "dark",
 }) => {
-  // Design tokens (derived from Figma local variables)
   const themeVars =
     theme === "light"
       ? {
@@ -46,10 +40,9 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
           "--yws-shadow": "rgba(0,0,0,0.24)",
         } as React.CSSProperties)
 
-  // Figma-exported assets
-  const imgFrame2147223205 = "/professional-woman-avatar-with-short-brown-hair-an.jpg"
-  const imgFrame2147223206 = "/professional-man-avatar-with-beard-and-glasses-loo.jpg"
-  const imgFrame2147223207 = "/professional-person-avatar-with-curly-hair-and-war.jpg"
+  const imgStudent1 = "/student-avatar-girl.jpg"
+  const imgStudent2 = "/student-avatar-boy.jpg"
+  const imgTutor = "/ai-tutor-avatar.jpg"
   const imgArrowUp =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='3' strokeLinecap='round' strokeLinejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"
 
@@ -66,9 +59,8 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
         } as React.CSSProperties
       }
       role="img"
-      aria-label="Chat conversation showing team collaboration sync"
+      aria-label="Chat conversation showing AI tutor sync"
     >
-      {/* Root frame size 482×300 – content centered */}
       <div
         style={{
           position: "absolute",
@@ -79,9 +71,8 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
           height: "216px",
         }}
       >
-        {/* Remove the flip transformation and position messages normally */}
         <div style={{ width: "356px", height: "216px", position: "relative", transform: "scale(1.1)" }}>
-          {/* Message 1: Left side with avatar */}
+          {/* Message 1: Student asks doubt */}
           <div
             style={{
               position: "absolute",
@@ -94,20 +85,17 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
               height: "36px",
             }}
           >
-            {/* Avatar */}
             <div
               style={{
                 width: "36px",
                 height: "36px",
                 borderRadius: "44px",
-                backgroundImage: `url('${imgFrame2147223205}')`,
+                backgroundImage: `url('${imgStudent1}')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 border: "1px solid var(--yws-border)",
-                flexShrink: 0,
               }}
             />
-            {/* Message bubble */}
             <div
               style={{
                 background: theme === "light" ? "#e8e5e3" : "var(--yws-bubble-light)",
@@ -116,7 +104,6 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                 height: "36px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
               }}
             >
               <span
@@ -125,17 +112,15 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                   fontWeight: 500,
                   fontSize: "13px",
                   lineHeight: "16px",
-                  letterSpacing: "-0.4px",
                   color: theme === "light" ? "#37322f" : "var(--yws-text-primary)",
-                  whiteSpace: "nowrap",
                 }}
               >
-                Team updates flow seamlessly
+                What’s Newton’s 2nd law?
               </span>
             </div>
           </div>
 
-          {/* Message 2: Right side with avatar */}
+          {/* Message 2: AI Tutor reply */}
           <div
             style={{
               position: "absolute",
@@ -147,7 +132,6 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
               justifyContent: "flex-end",
             }}
           >
-            {/* Message bubble */}
             <div
               style={{
                 background: theme === "light" ? "#37322f" : "var(--yws-bubble-dark)",
@@ -156,7 +140,6 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                 height: "36px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
               }}
             >
               <span
@@ -165,30 +148,26 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                   fontWeight: 500,
                   fontSize: "13px",
                   lineHeight: "16px",
-                  letterSpacing: "-0.4px",
                   color: "#ffffff",
-                  whiteSpace: "nowrap",
                 }}
               >
-                Hi everyone
+                F = m × a 🚀
               </span>
             </div>
-            {/* Avatar */}
             <div
               style={{
                 width: "36px",
                 height: "36px",
                 borderRadius: "44px",
-                backgroundImage: `url('${imgFrame2147223206}')`,
+                backgroundImage: `url('${imgTutor}')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 border: "1px solid var(--yws-border)",
-                flexShrink: 0,
               }}
             />
           </div>
 
-          {/* Message 3: Left side with avatar */}
+          {/* Message 3: Another student joins */}
           <div
             style={{
               position: "absolute",
@@ -197,24 +176,21 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
               display: "flex",
               gap: "10px",
               alignItems: "flex-start",
-              width: "210px",
+              width: "240px",
               height: "36px",
             }}
           >
-            {/* Avatar */}
             <div
               style={{
                 width: "36px",
                 height: "36px",
                 borderRadius: "44px",
-                backgroundImage: `url('${imgFrame2147223207}')`,
+                backgroundImage: `url('${imgStudent2}')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 border: "1px solid var(--yws-border)",
-                flexShrink: 0,
               }}
             />
-            {/* Message bubble */}
             <div
               style={{
                 background: theme === "light" ? "#e8e5e3" : "var(--yws-bubble-light)",
@@ -223,7 +199,6 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                 height: "36px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
               }}
             >
               <span
@@ -232,21 +207,19 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                   fontWeight: 500,
                   fontSize: "13px",
                   lineHeight: "16px",
-                  letterSpacing: "-0.4px",
                   color: theme === "light" ? "#37322f" : "var(--yws-text-primary)",
-                  whiteSpace: "nowrap",
                 }}
               >
-                How about this instead?
+                Ohh! That makes sense 👍
               </span>
             </div>
           </div>
 
-          {/* Message 4: Center with send button */}
+          {/* Message 4: Closing with encouragement */}
           <div
             style={{
               position: "absolute",
-              left: "146px",
+              left: "110px",
               top: "180px",
               display: "flex",
               gap: "10px",
@@ -254,7 +227,6 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
               height: "36px",
             }}
           >
-            {/* Message bubble */}
             <div
               style={{
                 background: "#ffffff",
@@ -263,9 +235,7 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                 height: "36px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0px 0px 0px 1px rgba(0,0,0,0.08), 0px 1px 2px -0.4px rgba(0,0,0,0.08)",
-                overflow: "hidden",
+                boxShadow: "0px 0px 0px 1px rgba(0,0,0,0.08), 0px 1px 2px rgba(0,0,0,0.08)",
               }}
             >
               <span
@@ -275,13 +245,11 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                   fontSize: "14px",
                   lineHeight: "20px",
                   color: "#030712",
-                  whiteSpace: "nowrap",
                 }}
               >
-                Great work, everyone!
+                Keep going, you’re doing great!
               </span>
             </div>
-            {/* Send button */}
             <div
               style={{
                 width: "36px",
@@ -291,19 +259,13 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.08)",
                 cursor: "pointer",
-                flexShrink: 0,
               }}
             >
               <img
                 src={imgArrowUp || "/placeholder.svg"}
                 alt="Send"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  filter: "brightness(0) invert(1)",
-                }}
+                style={{ width: "20px", height: "20px", filter: "brightness(0) invert(1)" }}
               />
             </div>
           </div>

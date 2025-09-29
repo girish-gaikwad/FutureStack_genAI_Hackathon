@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Instrument_Serif } from "next/font/google"
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { Car } from "lucide-react";
 
 
 const inter = Inter({
@@ -39,7 +41,10 @@ export default function RootLayout({
         />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400&display=swap" />
       </head>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">{children}
+        <Toaster position="top-center" />
+      </body>
+
     </html>
   );
 }

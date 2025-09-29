@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "images.unsplash.com",
       "images.pexels.com",
       "cdn.sanity.io",
+      "raw.githubusercontent.com",
     ],
   },
   typescript: {
