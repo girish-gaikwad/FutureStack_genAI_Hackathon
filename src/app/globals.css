@@ -45,49 +45,49 @@
 
 :root {
   --radius: 0.625rem;
-  
+
   /* Beach & Vintage Book Color Palette */
   /* Warm sand and aged paper tones */
   --background: #F7F5F3; /* Warm sandy beige - like aged paper */
   --foreground: #37322F; /* Deep coffee brown - readable text */
-  
+
   /* Card colors - lighter vintage paper */
   --card: #FEFDFB; /* Cream white - fresh paper */
   --card-foreground: #49423D; /* Rich chocolate text */
-  
+
   /* Popover - subtle warmth */
   --popover: #FDFCFA;
   --popover-foreground: #37322F;
-  
+
   /* Primary - deep book leather brown */
   --primary: #37322F; /* Book leather brown */
   --primary-foreground: #FEFDFB; /* Cream text on dark */
-  
+
   /* Secondary - warm sand accent */
   --secondary: #E8E3DF; /* Light sand */
   --secondary-foreground: #49423D; /* Dark brown text */
-  
+
   /* Muted - weathered tones */
   --muted: #EAE6E2; /* Weathered parchment */
   --muted-foreground: #605A57; /* Faded ink gray-brown */
-  
+
   /* Accent - warm terracotta/rust */
   --accent: #DCD5CF; /* Warm beige accent */
   --accent-foreground: #37322F; /* Dark text */
-  
+
   /* Destructive - vintage coral/rust */
   --destructive: #C17B6A; /* Aged coral */
   --border: #E0DEDB; /* Soft sepia border */
   --input: #E8E3DF; /* Light sand input background */
   --ring: #9B8C7F; /* Warm taupe focus ring */
-  
+
   /* Chart colors - earth tones & ocean blues */
   --chart-1: #8B7355; /* Warm sienna brown */
   --chart-2: #7BA3A8; /* Muted teal - ocean */
   --chart-3: #B89968; /* Golden sand */
   --chart-4: #6B8E8F; /* Dusty seafoam */
   --chart-5: #A67C5D; /* Terracotta clay */
-  
+
   /* Sidebar - slightly darker parchment */
   --sidebar: #F2EDE9;
   --sidebar-foreground: #37322F;
@@ -103,37 +103,37 @@
   /* Dark mode - evening beach & old library */
   --background: #2A2521; /* Dark walnut wood */
   --foreground: #E8E3DF; /* Warm cream text */
-  
+
   --card: #37322F; /* Deep brown card */
   --card-foreground: #EAE6E2; /* Light text */
-  
+
   --popover: #37322F;
   --popover-foreground: #EAE6E2;
-  
+
   --primary: #D4CBBF; /* Light sand accent */
   --primary-foreground: #2A2521; /* Dark text on light */
-  
+
   --secondary: #3E3835; /* Darker brown */
   --secondary-foreground: #E8E3DF; /* Light text */
-  
+
   --muted: #3E3835; /* Muted dark brown */
   --muted-foreground: #9B8C7F; /* Warm taupe text */
-  
+
   --accent: #4A433F; /* Rich dark accent */
   --accent-foreground: #E8E3DF; /* Light text */
-  
+
   --destructive: #C17B6A; /* Warm coral rust */
   --border: rgba(224, 222, 219, 0.15); /* Subtle borders */
   --input: rgba(232, 227, 223, 0.1); /* Subtle input bg */
   --ring: #9B8C7F; /* Focus ring */
-  
+
   /* Dark mode charts - deeper earth tones */
   --chart-1: #A67C5D; /* Warm terracotta */
   --chart-2: #6B8E8F; /* Ocean depth */
   --chart-3: #C4A572; /* Golden hour sand */
   --chart-4: #7BA3A8; /* Seafoam */
   --chart-5: #B89968; /* Amber sunset */
-  
+
   --sidebar: #2F2A26;
   --sidebar-foreground: #E8E3DF;
   --sidebar-primary: #D4CBBF;
@@ -148,7 +148,7 @@
   * {
     @apply border-border outline-ring/50;
   }
-  
+
   body {
     @apply bg-background text-foreground;
     /* Add subtle paper texture feel */
@@ -156,14 +156,14 @@
       radial-gradient(circle at 20% 50%, rgba(232, 227, 223, 0.3) 0%, transparent 50%),
       radial-gradient(circle at 80% 80%, rgba(220, 213, 207, 0.2) 0%, transparent 50%);
   }
-  
+
   /* Smooth transitions for theme changes */
   * {
     transition-property: color, background-color, border-color;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
   }
-  
+
   /* Enhance readability with slight text shadow */
   h1, h2, h3, h4, h5, h6 {
     text-shadow: 0 1px 2px rgba(55, 50, 47, 0.03);
@@ -175,19 +175,19 @@
   .text-vintage-brown {
     color: #37322F;
   }
-  
+
   .text-warm-sand {
     color: #9B8C7F;
   }
-  
+
   .bg-parchment {
     background-color: #F7F5F3;
   }
-  
+
   .bg-vintage-white {
     background-color: #FEFDFB;
   }
-  
+
   .border-sepia {
     border-color: #E0DEDB;
   }
