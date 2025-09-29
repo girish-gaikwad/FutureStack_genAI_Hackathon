@@ -1,10 +1,12 @@
 "use client"
 
 import { useState, forwardRef, useImperativeHandle, useRef } from "react"
-import { Pencil, RefreshCw, Check, X, Square } from "lucide-react"
+import { Pencil, RefreshCw, Check, X, Square, PanelLeft } from "lucide-react"
 import Message from "./Message"
 import Composer from "./Composer"
 import { cls, timeAgo } from "./utils"
+import { Button } from "../ui/button"
+import { useAppStore } from "@/stores/appsidebarStore"
 
 function ThinkingMessage({ onPause }) {
   return (
@@ -71,22 +73,30 @@ const ChatPane = forwardRef(function ChatPane(
     onResendMessage?.(editingId)
     cancelEdit()
   }
-
+  const { setSidebarOpen,sidebarOpen } = useAppStore()
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col">
+    <div className="flex h-full min-h-0 flex-1 flex-col bg-background" >
       <div className="flex-1 space-y-5 overflow-y-auto px-4 py-6 sm:px-8">
-        <div className="mb-2 text-3xl font-serif tracking-tight sm:text-4xl md:text-5xl">
+        <div className="mb-2 flex items-center text-3xl font-serif tracking-tight sm:text-4xl md:text-5xl">
+        <Button
+                   variant="ghost"
+                   size="icon"
+                   className="mr-2 hidden md:flex"
+                   onClick={() => setSidebarOpen(!sidebarOpen)}
+                 >
+                   <PanelLeft className="h-8 w-8" />
+                 </Button>
           <span className="block leading-[1.05] font-sans text-2xl">{conversation.title}</span>
         </div>
         <div className="mb-4 text-sm text-zinc-500 dark:text-zinc-400">
           Updated {timeAgo(conversation.updatedAt)} · {count} messages
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-2 border-b border-zinc-200 pb-5 dark:border-zinc-800">
+        <div className="mb-6 flex flex-wrap gap-2 border-b border-zinc-200 pb-5 dark:border-white/10">
           {tags.map((t) => (
             <span
               key={t}
-              className="inline-flex items-center rounded-full border border-zinc-200 px-3 py-1 text-xs text-zinc-700 dark:border-zinc-800 dark:text-zinc-200"
+              className="inline-flex items-center rounded-full border border-zinc-200 px-3 py-1 text-xs text-zinc-700 dark:border-white/20 dark:text-zinc-200"
             >
               {t}
             </span>

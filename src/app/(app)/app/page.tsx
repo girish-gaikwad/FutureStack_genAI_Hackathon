@@ -51,6 +51,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { ModeToggle } from "@/components/modeToggle"
+import { useAppStore } from "@/stores/appsidebarStore"
 
 // Sample data for apps
 const apps = [
@@ -356,9 +357,7 @@ export default function DemoApp() {
   const [progress, setProgress] = useState(0)
   const [notifications, setNotifications] = useState(5)
   const [activeTab, setActiveTab] = useState("home")
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
+  const { sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpen } = useAppStore()
   // Simulate progress loading
   useEffect(() => {
     const timer = setTimeout(() => setProgress(100), 1000)
@@ -400,7 +399,6 @@ export default function DemoApp() {
                 <TooltipContent>Messages</TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <ModeToggle />
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
