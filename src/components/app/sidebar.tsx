@@ -167,6 +167,7 @@ function Sidebar() {
                         </div>
                     </ScrollArea>
 
+
                     <div className="mt-auto border-t border-zinc-200/60 px-3 py-3 dark:border-zinc-800">
                         <div className="flex items-center gap-2">
                             <SettingsPopovers>
@@ -230,6 +231,7 @@ function Sidebar() {
                             {sidebarItems.map(renderNavItem)}
                         </div>
                     </ScrollArea>
+
 
                     <div className="mt-auto border-t border-zinc-200/60 px-3 py-3 dark:border-zinc-800">
                         <div className="flex items-center gap-2">
