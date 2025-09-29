@@ -44,7 +44,6 @@ export default function RootLayout({
       <body className="font-sans antialiased">{children}
         <Toaster position="top-center" />
       </body>
-
     </html>
   );
 }

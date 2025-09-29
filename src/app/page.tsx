@@ -4,21 +4,14 @@ import type React from "react"
 
 import CTASection from "@/components/landingPage/cta-section"
 import DocumentationSection from "@/components/landingPage/documentation-section"
-import EffortlessIntegration from "@/components/landingPage/effortless-integration"
 import FAQSection from "@/components/landingPage/faq-section"
+import Features from "@/components/landingPage/features"
 import FooterSection from "@/components/landingPage/footer-section"
 import Header from "@/components/landingPage/header"
-import NumbersThatSpeak from "@/components/landingPage/numbers-that-speak"
-import PricingSection from "@/components/landingPage/pricing-section"
-import SmartSimpleBrilliant from "@/components/landingPage/smart-simple-brilliant"
-import TestimonialsSection from "@/components/landingPage/testimonials-section"
-import YourWorkInSync from "@/components/landingPage/your-work-in-sync"
-import Image from "next/image"
-import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
 import { HeroSection } from "@/components/landingPage/hero-section"
+import PricingSection from "@/components/landingPage/pricing-section"
 import SyllabusSection from "@/components/landingPage/syllabus"
-import Features from "@/components/landingPage/features"
+import TestimonialsSection from "@/components/landingPage/testimonials-section"
 
 // Reusable Badge Component
 function Badge({ icon, text }: { icon: React.ReactNode; text: string }) {
@@ -53,7 +46,7 @@ export default function LandingPage() {
 
               <SyllabusSection />
 
-              <Features/>
+              <Features />
 
               {/* Documentation Section */}
               <DocumentationSection />

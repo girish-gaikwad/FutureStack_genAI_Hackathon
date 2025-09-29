@@ -1,52 +1,46 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import {
+  Archive,
+  ArrowUpDown,
   Award,
   Bell,
   BookOpen,
   Bookmark,
   Brush,
   Camera,
-  ChevronDown,
+  Clock,
   Cloud,
   Code,
   Crown,
+  CuboidIcon,
   Download,
+  Eye,
   FileText,
-  Grid,
   Heart,
-  Home,
   ImageIcon,
   Layers,
   LayoutGrid,
   Lightbulb,
   Menu,
   MessageSquare,
+  MoreHorizontal,
   Palette,
   PanelLeft,
   Play,
   Plus,
   Search,
-  Settings,
   Share2,
   Sparkles,
   Star,
   Trash,
   TrendingUp,
-  Users,
-  Video,
-  Wand2,
-  Clock,
-  Eye,
-  Archive,
-  ArrowUpDown,
-  MoreHorizontal,
   Type,
-  CuboidIcon,
-  X,
+  Users,
+  Video
 } from "lucide-react"
+import { useEffect, useState } from "react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -54,11 +48,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
-import Sidebar from "./app/sidebar"
+import { ModeToggle } from "@/components/modeToggle"
 
 // Sample data for apps
 const apps = [
@@ -366,7 +358,6 @@ export default function DemoApp() {
   const [activeTab, setActiveTab] = useState("home")
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
 
   // Simulate progress loading
   useEffect(() => {
@@ -409,7 +400,7 @@ export default function DemoApp() {
                 <TooltipContent>Messages</TooltipContent>
               </Tooltip>
             </TooltipProvider>
-
+            <ModeToggle />
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
