@@ -1,4 +1,4 @@
-import { BookOpen, Grid, Home, Layers } from 'lucide-react';
+import { BookOpen, Grid, Home, Layers, BarChart3, User, Settings } from 'lucide-react';
 import { create } from 'zustand';
 
 // Define types for chapters and sidebar items
@@ -79,6 +79,12 @@ const initialSidebarItems: SidebarItem[] = [
         icon: <BookOpen />,
         url: "/app/question-book",
     },
+    {
+        title: "Analytics",
+        icon: <BarChart3 />,
+        url: "/app/analytics",
+    },
+
 ];
 
 export const useAppStore = create<AppState>((set, get) => ({

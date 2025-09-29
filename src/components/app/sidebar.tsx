@@ -169,10 +169,10 @@ function Sidebar() {
                     <div className="border-t p-3">
                         <div className="space-y-1">
                             <Link
-                                href="/settings"
+                                href="/app/settings"
                                 className={cn(
                                     "flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium",
-                                    pathname === "/settings" ? "bg-primary/10 text-primary" : "hover:bg-muted"
+                                    pathname === "/app/settings" ? "bg-primary/10 text-primary" : "hover:bg-muted"
                                 )}
                                 onClick={() => setMobileMenuOpen(false)}
                             >
@@ -180,10 +180,10 @@ function Sidebar() {
                                 <span>Settings</span>
                             </Link>
                             <Link
-                                href="/profile"
+                                href="/app/profile"
                                 className={cn(
                                     "flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium",
-                                    pathname === "/profile" ? "bg-primary/10 text-primary" : "hover:bg-muted"
+                                    pathname === "/app/profile" ? "bg-primary/10 text-primary" : "hover:bg-muted"
                                 )}
                                 onClick={() => setMobileMenuOpen(false)}
                             >
@@ -244,20 +244,20 @@ function Sidebar() {
                     <div className="border-t p-3">
                         <div className="space-y-1">
                             <Link
-                                href="/settings"
+                                href="/app/settings"
                                 className={cn(
                                     "flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium",
-                                    pathname === "/settings" ? "bg-primary/10 text-primary" : "hover:bg-muted"
+                                    pathname === "/app/settings" ? "bg-primary/10 text-primary" : "hover:bg-muted"
                                 )}
                             >
                                 <Settings className="h-5 w-5" />
                                 <span>Settings</span>
                             </Link>
                             <Link
-                                href="/profile"
+                                href="/app/profile"
                                 className={cn(
                                     "flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium",
-                                    pathname === "/profile" ? "bg-primary/10 text-primary" : "hover:bg-muted"
+                                    pathname === "/app/profile" ? "bg-primary/10 text-primary" : "hover:bg-muted"
                                 )}
                             >
                                 <div className="flex items-center gap-3">
