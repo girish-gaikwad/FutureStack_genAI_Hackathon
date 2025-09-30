@@ -2,43 +2,27 @@
 
 import { AnimatePresence, motion } from "framer-motion"
 import {
-  Archive,
-  ArrowUpDown,
   Award,
   Bell,
   BookOpen,
-  Bookmark,
-  Brush,
-  Camera,
+  Brain,
+  Calendar,
+  CheckCircle2,
   Clock,
-  Cloud,
-  Code,
-  Crown,
-  CuboidIcon,
-  Download,
-  Eye,
   FileText,
-  Heart,
-  ImageIcon,
-  Layers,
-  LayoutGrid,
-  Lightbulb,
+  Flame,
+  GraduationCap,
   Menu,
   MessageSquare,
-  MoreHorizontal,
-  Palette,
   PanelLeft,
   Play,
   Plus,
   Search,
-  Share2,
-  Sparkles,
   Star,
-  Trash,
+  Target,
   TrendingUp,
-  Type,
-  Users,
-  Video
+  Trophy,
+  Zap
 } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -50,323 +34,180 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { ModeToggle } from "@/components/modeToggle"
 import { useAppStore } from "@/stores/appsidebarStore"
 
-// Sample data for apps
-const apps = [
+// Student subjects with progress
+const subjects = [
   {
-    name: "PixelMaster",
-    icon: <ImageIcon className="text-violet-500" />,
-    description: "Advanced image editing and composition",
-    category: "Creative",
-    recent: true,
-    new: false,
-    progress: 100,
-  },
-  {
-    name: "VectorPro",
-    icon: <Brush className="text-orange-500" />,
-    description: "Professional vector graphics creation",
-    category: "Creative",
-    recent: true,
-    new: false,
-    progress: 100,
-  },
-  {
-    name: "VideoStudio",
-    icon: <Video className="text-pink-500" />,
-    description: "Cinematic video editing and production",
-    category: "Video",
-    recent: true,
-    new: false,
-    progress: 100,
-  },
-  {
-    name: "MotionFX",
-    icon: <Sparkles className="text-blue-500" />,
-    description: "Stunning visual effects and animations",
-    category: "Video",
-    recent: false,
-    new: false,
-    progress: 100,
-  },
-  {
-    name: "PageCraft",
-    icon: <Layers className="text-red-500" />,
-    description: "Professional page design and layout",
-    category: "Creative",
-    recent: false,
-    new: false,
-    progress: 100,
-  },
-  {
-    name: "UXFlow",
-    icon: <LayoutGrid className="text-fuchsia-500" />,
-    description: "Intuitive user experience design",
-    category: "Design",
-    recent: false,
-    new: true,
-    progress: 85,
-  },
-  {
-    name: "PhotoLab",
-    icon: <Camera className="text-teal-500" />,
-    description: "Advanced photo editing and organization",
-    category: "Photography",
-    recent: false,
-    new: false,
-    progress: 100,
-  },
-  {
-    name: "DocMaster",
-    icon: <FileText className="text-red-600" />,
-    description: "Document editing and management",
-    category: "Document",
-    recent: false,
-    new: false,
-    progress: 100,
-  },
-  {
-    name: "WebCanvas",
-    icon: <Code className="text-emerald-500" />,
-    description: "Web design and development",
-    category: "Web",
-    recent: false,
-    new: true,
-    progress: 70,
-  },
-  {
-    name: "3DStudio",
-    icon: <CuboidIcon className="text-indigo-500" />,
-    description: "3D modeling and rendering",
-    category: "3D",
-    recent: false,
-    new: true,
-    progress: 60,
-  },
-  {
-    name: "FontForge",
-    icon: <Type className="text-amber-500" />,
-    description: "Typography and font creation",
-    category: "Typography",
-    recent: false,
-    new: false,
-    progress: 100,
-  },
-  {
-    name: "ColorPalette",
-    icon: <Palette className="text-purple-500" />,
-    description: "Color scheme creation and management",
-    category: "Design",
-    recent: false,
-    new: false,
-    progress: 100,
-  },
-]
-
-// Sample data for recent files
-const recentFiles = [
-  {
-    name: "Brand Redesign.pxm",
-    app: "PixelMaster",
-    modified: "2 hours ago",
-    icon: <ImageIcon className="text-violet-500" />,
-    shared: true,
-    size: "24.5 MB",
-    collaborators: 3,
-  },
-  {
-    name: "Company Logo.vec",
-    app: "VectorPro",
-    modified: "Yesterday",
-    icon: <Brush className="text-orange-500" />,
-    shared: true,
-    size: "8.2 MB",
-    collaborators: 2,
-  },
-  {
-    name: "Product Launch Video.vid",
-    app: "VideoStudio",
-    modified: "3 days ago",
-    icon: <Video className="text-pink-500" />,
-    shared: false,
-    size: "1.2 GB",
-    collaborators: 0,
-  },
-  {
-    name: "UI Animation.mfx",
-    app: "MotionFX",
-    modified: "Last week",
-    icon: <Sparkles className="text-blue-500" />,
-    shared: true,
-    size: "345 MB",
-    collaborators: 4,
-  },
-  {
-    name: "Magazine Layout.pgc",
-    app: "PageCraft",
-    modified: "2 weeks ago",
-    icon: <Layers className="text-red-500" />,
-    shared: false,
-    size: "42.8 MB",
-    collaborators: 0,
-  },
-  {
-    name: "Mobile App Design.uxf",
-    app: "UXFlow",
-    modified: "3 weeks ago",
-    icon: <LayoutGrid className="text-fuchsia-500" />,
-    shared: true,
-    size: "18.3 MB",
-    collaborators: 5,
-  },
-  {
-    name: "Product Photography.phl",
-    app: "PhotoLab",
-    modified: "Last month",
-    icon: <Camera className="text-teal-500" />,
-    shared: false,
-    size: "156 MB",
-    collaborators: 0,
-  },
-]
-
-// Sample data for projects
-const projects = [
-  {
-    name: "Website Redesign",
-    description: "Complete overhaul of company website",
+    name: "Mathematics",
+    icon: "📐",
+    chapter: "Calculus - Derivatives",
     progress: 75,
-    dueDate: "June 15, 2025",
-    members: 4,
-    files: 23,
+    quizzes: 12,
+    completed: 9,
+    grade: "A",
+    color: "from-blue-500 to-cyan-500"
   },
   {
-    name: "Mobile App Launch",
-    description: "Design and assets for new mobile application",
+    name: "Physics",
+    icon: "⚡",
+    chapter: "Electromagnetism",
     progress: 60,
-    dueDate: "July 30, 2025",
-    members: 6,
-    files: 42,
+    quizzes: 10,
+    completed: 6,
+    grade: "B+",
+    color: "from-purple-500 to-pink-500"
   },
   {
-    name: "Brand Identity",
-    description: "New brand guidelines and assets",
-    progress: 90,
-    dueDate: "May 25, 2025",
-    members: 3,
-    files: 18,
+    name: "Chemistry",
+    icon: "🧪",
+    chapter: "Organic Chemistry",
+    progress: 85,
+    quizzes: 15,
+    completed: 13,
+    grade: "A+",
+    color: "from-green-500 to-emerald-500"
   },
   {
-    name: "Marketing Campaign",
-    description: "Summer promotion materials",
-    progress: 40,
-    dueDate: "August 10, 2025",
-    members: 5,
-    files: 31,
+    name: "Biology",
+    icon: "🧬",
+    chapter: "Cell Biology",
+    progress: 70,
+    quizzes: 8,
+    completed: 6,
+    grade: "A-",
+    color: "from-teal-500 to-cyan-500"
   },
 ]
 
-// Sample data for tutorials
-const tutorials = [
+// Recent quiz attempts
+const recentQuizzes = [
   {
-    title: "Mastering Digital Illustration",
-    description: "Learn advanced techniques for creating stunning digital art",
-    duration: "1h 45m",
-    level: "Advanced",
-    instructor: "Sarah Chen",
-    category: "Illustration",
+    subject: "Chemistry",
+    chapter: "Organic Reactions",
+    score: 95,
+    date: "Today",
+    questions: 20,
+    time: "15 min"
+  },
+  {
+    subject: "Mathematics",
+    chapter: "Limits & Continuity",
+    score: 82,
+    date: "Yesterday",
+    questions: 25,
+    time: "18 min"
+  },
+  {
+    subject: "Physics",
+    chapter: "Newton's Laws",
+    score: 78,
+    date: "2 days ago",
+    questions: 15,
+    time: "12 min"
+  },
+  {
+    subject: "Biology",
+    chapter: "Photosynthesis",
+    score: 88,
+    date: "3 days ago",
+    questions: 20,
+    time: "16 min"
+  },
+]
+
+// Study materials
+const studyMaterials = [
+  {
+    title: "NCERT Solutions - Class 12 Math",
+    subject: "Mathematics",
+    type: "PDF",
+    pages: 450,
+    updated: "2 days ago"
+  },
+  {
+    title: "Physics Formula Sheet",
+    subject: "Physics",
+    type: "PDF",
+    pages: 25,
+    updated: "1 week ago"
+  },
+  {
+    title: "Chemistry Reaction Mechanisms",
+    subject: "Chemistry",
+    type: "Notes",
+    pages: 80,
+    updated: "3 days ago"
+  },
+  {
+    title: "Biology Diagrams Collection",
+    subject: "Biology",
+    type: "Images",
+    pages: 120,
+    updated: "5 days ago"
+  },
+]
+
+// Upcoming tests
+const upcomingTests = [
+  {
+    subject: "Mathematics",
+    chapter: "Calculus - Full Chapter",
+    date: "Oct 15, 2024",
+    daysLeft: 5,
+    topics: ["Limits", "Derivatives", "Integration"]
+  },
+  {
+    subject: "Physics",
+    chapter: "Electricity & Magnetism",
+    date: "Oct 20, 2024",
+    daysLeft: 10,
+    topics: ["Coulomb's Law", "Electric Field", "Magnetic Force"]
+  },
+  {
+    subject: "Chemistry",
+    chapter: "Organic Chemistry - Unit 2",
+    date: "Oct 25, 2024",
+    daysLeft: 15,
+    topics: ["Reactions", "Mechanisms", "Stereochemistry"]
+  },
+]
+
+// Learning videos
+const learningVideos = [
+  {
+    title: "Understanding Derivatives - Complete Guide",
+    subject: "Mathematics",
+    duration: "45 min",
     views: "24K",
+    instructor: "Dr. Sharma",
+    difficulty: "Intermediate"
   },
   {
-    title: "UI/UX Design Fundamentals",
-    description: "Essential principles for creating intuitive user interfaces",
-    duration: "2h 20m",
-    level: "Intermediate",
-    instructor: "Michael Rodriguez",
-    category: "Design",
-    views: "56K",
-  },
-  {
-    title: "Video Editing Masterclass",
-    description: "Professional techniques for cinematic video editing",
-    duration: "3h 10m",
-    level: "Advanced",
-    instructor: "James Wilson",
-    category: "Video",
-    views: "32K",
-  },
-  {
-    title: "Typography Essentials",
-    description: "Create beautiful and effective typography for any project",
-    duration: "1h 30m",
-    level: "Beginner",
-    instructor: "Emma Thompson",
-    category: "Typography",
+    title: "Electromagnetic Induction Explained",
+    subject: "Physics",
+    duration: "38 min",
     views: "18K",
+    instructor: "Prof. Kumar",
+    difficulty: "Advanced"
   },
   {
-    title: "Color Theory for Designers",
-    description: "Understanding color relationships and psychology",
-    duration: "2h 05m",
-    level: "Intermediate",
-    instructor: "David Kim",
-    category: "Design",
-    views: "41K",
+    title: "Organic Reaction Mechanisms Made Easy",
+    subject: "Chemistry",
+    duration: "52 min",
+    views: "32K",
+    instructor: "Dr. Patel",
+    difficulty: "Intermediate"
   },
 ]
 
-// Sample data for community posts
-const communityPosts = [
-  {
-    title: "Minimalist Logo Design",
-    author: "Alex Morgan",
-    likes: 342,
-    comments: 28,
-    image: "/placeholder.svg?height=300&width=400",
-    time: "2 days ago",
-  },
-  {
-    title: "3D Character Concept",
-    author: "Priya Sharma",
-    likes: 518,
-    comments: 47,
-    image: "/placeholder.svg?height=300&width=400",
-    time: "1 week ago",
-  },
-  {
-    title: "UI Dashboard Redesign",
-    author: "Thomas Wright",
-    likes: 276,
-    comments: 32,
-    image: "/placeholder.svg?height=300&width=400",
-    time: "3 days ago",
-  },
-  {
-    title: "Product Photography Setup",
-    author: "Olivia Chen",
-    likes: 189,
-    comments: 15,
-    image: "/placeholder.svg?height=300&width=400",
-    time: "5 days ago",
-  },
-]
-
-export default function DemoApp() {
-  const [progress, setProgress] = useState(0)
-  const [notifications, setNotifications] = useState(5)
+export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState("home")
   const { sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpen } = useAppStore()
-  // Simulate progress loading
-  useEffect(() => {
-    const timer = setTimeout(() => setProgress(100), 1000)
-    return () => clearTimeout(timer)
-  }, [])
-
+  const [notifications, setNotifications] = useState(3)
+  const [streakDays, setStreakDays] = useState(15)
 
   return (
-
     <>
       <header className="sticky top-0 z-10 flex h-16 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur">
         <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileMenuOpen(true)}>
@@ -376,19 +217,8 @@ export default function DemoApp() {
           <PanelLeft className="h-5 w-5" />
         </Button>
         <div className="flex flex-1 items-center justify-between">
-          <h1 className="text-xl font-semibold">Designali Creative</h1>
+          <h1 className="text-xl font-semibold">AI Tutor Dashboard</h1>
           <div className="flex items-center gap-3">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-2xl">
-                    <Cloud className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Cloud Storage</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -396,9 +226,10 @@ export default function DemoApp() {
                     <MessageSquare className="h-5 w-5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Messages</TooltipContent>
+                <TooltipContent>Ask AI Tutor</TooltipContent>
               </Tooltip>
             </TooltipProvider>
+
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -416,8 +247,8 @@ export default function DemoApp() {
             </TooltipProvider>
 
             <Avatar className="h-9 w-9 border-2 border-primary">
-              <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Student" />
+              <AvatarFallback>ST</AvatarFallback>
             </Avatar>
           </div>
         </div>
@@ -427,32 +258,22 @@ export default function DemoApp() {
         <Tabs defaultValue="home" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <TabsList className="grid w-full max-w-[600px] grid-cols-5 rounded-2xl p-1">
-              <TabsTrigger value="home" className="rounded-xl data-[state=active]:rounded-xl">
+              <TabsTrigger value="home" className="rounded-xl">
                 Home
               </TabsTrigger>
-              <TabsTrigger value="apps" className="rounded-xl data-[state=active]:rounded-xl">
-                Apps
+              <TabsTrigger value="subjects" className="rounded-xl">
+                Subjects
               </TabsTrigger>
-              <TabsTrigger value="files" className="rounded-xl data-[state=active]:rounded-xl">
-                Files
+              <TabsTrigger value="quizzes" className="rounded-xl">
+                Quizzes
               </TabsTrigger>
-              <TabsTrigger value="projects" className="rounded-xl data-[state=active]:rounded-xl">
-                Projects
+              <TabsTrigger value="materials" className="rounded-xl">
+                Materials
               </TabsTrigger>
-              <TabsTrigger value="learn" className="rounded-xl data-[state=active]:rounded-xl">
-                Learn
+              <TabsTrigger value="progress" className="rounded-xl">
+                Progress
               </TabsTrigger>
             </TabsList>
-            <div className="hidden md:flex gap-2">
-              <Button variant="outline" className="rounded-2xl">
-                <Download className="mr-2 h-4 w-4" />
-                Install App
-              </Button>
-              <Button className="rounded-2xl">
-                <Plus className="mr-2 h-4 w-4" />
-                New Project
-              </Button>
-            </div>
           </div>
 
           <AnimatePresence mode="wait">
@@ -463,331 +284,127 @@ export default function DemoApp() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
             >
-              <TabsContent value="home" className="space-y-8 mt-0">
-                <section>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="overflow-hidden rounded-3xl bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 p-8 text-white"
-                  >
-                    <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                      <div className="space-y-4">
-                        <Badge className="bg-white/20 text-white hover:bg-white/30 rounded-xl">Premium</Badge>
-                        <h2 className="text-3xl font-bold">Welcome to DesignAli Creative Suite</h2>
-                        <p className="max-w-[600px] text-white/80">
-                          Unleash your creativity with our comprehensive suite of professional design tools and
-                          resources.
-                        </p>
-                        <div className="flex flex-wrap gap-3">
-                          <Button className="rounded-2xl bg-white text-indigo-700 hover:bg-white/90">
-                            Explore Plans
-                          </Button>
-                          <Button
-                            variant="outline"
-                            className="rounded-2xl bg-transparent border-white text-white hover:bg-white/10"
-                          >
-                            Take a Tour
-                          </Button>
-                        </div>
+              <TabsContent value="home" className="space-y-6 mt-0">
+                {/* Hero Section */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-8 text-white"
+                >
+                  <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <Badge className="bg-white/20 text-white hover:bg-white/30 rounded-xl">
+                          <Flame className="w-3 h-3 mr-1" />
+                          {streakDays} Day Streak
+                        </Badge>
+                        <Badge className="bg-white/20 text-white hover:bg-white/30 rounded-xl">
+                          CBSE Class 12
+                        </Badge>
                       </div>
-                      <div className="hidden lg:block">
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 50, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                          className="relative h-40 w-40"
+                      <h2 className="text-3xl font-bold">Welcome Back, Student!</h2>
+                      <p className="max-w-[600px] text-white/90">
+                        Continue your learning journey. You're doing great! Keep up the momentum.
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        <Button className="rounded-2xl bg-white text-indigo-700 hover:bg-white/90">
+                          <Brain className="mr-2 h-4 w-4" />
+                          Ask AI Tutor
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="rounded-2xl bg-transparent border-white text-white hover:bg-white/10"
                         >
-                          <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-md" />
-                          <div className="absolute inset-4 rounded-full bg-white/20" />
-                          <div className="absolute inset-8 rounded-full bg-white/30" />
-                          <div className="absolute inset-12 rounded-full bg-white/40" />
-                          <div className="absolute inset-16 rounded-full bg-white/50" />
-                        </motion.div>
+                          <Target className="mr-2 h-4 w-4" />
+                          Set Goals
+                        </Button>
                       </div>
                     </div>
-                  </motion.div>
-                </section>
+                    <div className="hidden lg:flex flex-col gap-3 bg-white/10 backdrop-blur-md rounded-2xl p-6 min-w-[200px]">
+                      <div className="text-center">
+                        <div className="text-4xl font-bold">156</div>
+                        <div className="text-sm text-white/80">Quizzes Completed</div>
+                      </div>
+                      <div className="h-px bg-white/20" />
+                      <div className="text-center">
+                        <div className="text-4xl font-bold">84%</div>
+                        <div className="text-sm text-white/80">Average Score</div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
 
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <Card className="rounded-3xl">
+                    <CardContent className="p-6 text-center">
+                      <Trophy className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
+                      <div className="text-2xl font-bold">24</div>
+                      <div className="text-sm text-muted-foreground">Total Achievements</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="rounded-3xl">
+                    <CardContent className="p-6 text-center">
+                      <Clock className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                      <div className="text-2xl font-bold">42h</div>
+                      <div className="text-sm text-muted-foreground">Study Time</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="rounded-3xl">
+                    <CardContent className="p-6 text-center">
+                      <CheckCircle2 className="w-8 h-8 text-green-500 mx-auto mb-2" />
+                      <div className="text-2xl font-bold">156</div>
+                      <div className="text-sm text-muted-foreground">Quizzes Done</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="rounded-3xl">
+                    <CardContent className="p-6 text-center">
+                      <Star className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+                      <div className="text-2xl font-bold">4.2</div>
+                      <div className="text-sm text-muted-foreground">Avg Rating</div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Subjects Overview */}
                 <section className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold">Recent Apps</h2>
+                    <h2 className="text-2xl font-semibold">Your Subjects</h2>
                     <Button variant="ghost" className="rounded-2xl">
                       View All
                     </Button>
                   </div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {apps
-                      .filter((app) => app.recent)
-                      .map((app) => (
-                        <motion.div key={app.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                          <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                            <CardHeader className="pb-2">
-                              <div className="flex items-center justify-between">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                                  {app.icon}
-                                </div>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-2xl">
-                                  <Star className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </CardHeader>
-                            <CardContent className="pb-2">
-                              <CardTitle className="text-lg">{app.name}</CardTitle>
-                              <CardDescription>{app.description}</CardDescription>
-                            </CardContent>
-                            <CardFooter>
-                              <Button variant="secondary" className="w-full rounded-2xl">
-                                Open
-                              </Button>
-                            </CardFooter>
-                          </Card>
-                        </motion.div>
-                      ))}
-                  </div>
-                </section>
-
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                  <section className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-semibold">Recent Files</h2>
-                      <Button variant="ghost" className="rounded-2xl">
-                        View All
-                      </Button>
-                    </div>
-                    <div className="rounded-3xl border">
-                      <div className="grid grid-cols-1 divide-y">
-                        {recentFiles.slice(0, 4).map((file) => (
-                          <motion.div
-                            key={file.name}
-                            whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-                            className="flex items-center justify-between p-4"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted">
-                                {file.icon}
-                              </div>
-                              <div>
-                                <p className="font-medium">{file.name}</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {file.app} • {file.modified}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {file.shared && (
-                                <Badge variant="outline" className="rounded-xl">
-                                  <Users className="mr-1 h-3 w-3" />
-                                  {file.collaborators}
-                                </Badge>
-                              )}
-                              <Button variant="ghost" size="sm" className="rounded-xl">
-                                Open
-                              </Button>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  </section>
-
-                  <section className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-semibold">Active Projects</h2>
-                      <Button variant="ghost" className="rounded-2xl">
-                        View All
-                      </Button>
-                    </div>
-                    <div className="rounded-3xl border">
-                      <div className="grid grid-cols-1 divide-y">
-                        {projects.slice(0, 3).map((project) => (
-                          <motion.div
-                            key={project.name}
-                            whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-                            className="p-4"
-                          >
-                            <div className="flex items-center justify-between mb-2">
-                              <h3 className="font-medium">{project.name}</h3>
-                              <Badge variant="outline" className="rounded-xl">
-                                Due {project.dueDate}
-                              </Badge>
-                            </div>
-                            <p className="text-sm text-muted-foreground mb-3">{project.description}</p>
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between text-sm">
-                                <span>Progress</span>
-                                <span>{project.progress}%</span>
-                              </div>
-                              <Progress value={project.progress} className="h-2 rounded-xl" />
-                            </div>
-                            <div className="flex items-center justify-between mt-3 text-sm text-muted-foreground">
-                              <div className="flex items-center">
-                                <Users className="mr-1 h-4 w-4" />
-                                {project.members} members
-                              </div>
-                              <div className="flex items-center">
-                                <FileText className="mr-1 h-4 w-4" />
-                                {project.files} files
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  </section>
-                </div>
-
-                <section className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold">Community Highlights</h2>
-                    <Button variant="ghost" className="rounded-2xl">
-                      Explore
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                    {communityPosts.map((post) => (
-                      <motion.div key={post.title} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                        <Card className="overflow-hidden rounded-3xl">
-                          <div className="aspect-[4/3] overflow-hidden bg-muted">
-                            <img
-                              src={post.image || "/placeholder.svg"}
-                              alt={post.title}
-                              className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                            />
-                          </div>
-                          <CardContent className="p-4">
-                            <h3 className="font-semibold">{post.title}</h3>
-                            <p className="text-sm text-muted-foreground">by {post.author}</p>
-                            <div className="mt-2 flex items-center justify-between text-sm">
-                              <div className="flex items-center gap-2">
-                                <Heart className="h-4 w-4 text-red-500" />
-                                {post.likes}
-                                <MessageSquare className="ml-2 h-4 w-4 text-blue-500" />
-                                {post.comments}
-                              </div>
-                              <span className="text-muted-foreground">{post.time}</span>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-              </TabsContent>
-
-              <TabsContent value="apps" className="space-y-8 mt-0">
-                <section>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="overflow-hidden rounded-3xl bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 p-8 text-white"
-                  >
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div className="space-y-2">
-                        <h2 className="text-3xl font-bold">Creative Apps Collection</h2>
-                        <p className="max-w-[600px] text-white/80">
-                          Discover our full suite of professional design and creative applications.
-                        </p>
-                      </div>
-                      <Button className="w-fit rounded-2xl bg-white text-red-700 hover:bg-white/90">
-                        <Download className="mr-2 h-4 w-4" />
-                        Install Desktop App
-                      </Button>
-                    </div>
-                  </motion.div>
-                </section>
-
-                <div className="flex flex-wrap gap-3 mb-6">
-                  <Button variant="outline" className="rounded-2xl">
-                    All Categories
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    Creative
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    Video
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    Web
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    3D
-                  </Button>
-                  <div className="flex-1"></div>
-                  <div className="relative w-full md:w-auto mt-3 md:mt-0">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="search"
-                      placeholder="Search apps..."
-                      className="w-full rounded-2xl pl-9 md:w-[200px]"
-                    />
-                  </div>
-                </div>
-
-                <section className="space-y-4">
-                  <h2 className="text-2xl font-semibold">New Releases</h2>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {apps
-                      .filter((app) => app.new)
-                      .map((app) => (
-                        <motion.div key={app.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                          <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                            <CardHeader className="pb-2">
-                              <div className="flex items-center justify-between">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                                  {app.icon}
-                                </div>
-                                <Badge className="rounded-xl bg-amber-500">New</Badge>
-                              </div>
-                            </CardHeader>
-                            <CardContent className="pb-2">
-                              <CardTitle className="text-lg">{app.name}</CardTitle>
-                              <CardDescription>{app.description}</CardDescription>
-                              <div className="mt-2">
-                                <div className="flex items-center justify-between text-sm">
-                                  <span>Installation</span>
-                                  <span>{app.progress}%</span>
-                                </div>
-                                <Progress value={app.progress} className="h-2 mt-1 rounded-xl" />
-                              </div>
-                            </CardContent>
-                            <CardFooter>
-                              <Button variant="secondary" className="w-full rounded-2xl">
-                                {app.progress < 100 ? "Continue Install" : "Open"}
-                              </Button>
-                            </CardFooter>
-                          </Card>
-                        </motion.div>
-                      ))}
-                  </div>
-                </section>
-
-                <section className="space-y-4">
-                  <h2 className="text-2xl font-semibold">All Apps</h2>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {apps.map((app) => (
-                      <motion.div key={app.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                        <Card className="overflow-hidden rounded-3xl border hover:border-primary/50 transition-all duration-300">
-                          <CardHeader className="pb-2">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {subjects.map((subject) => (
+                      <motion.div key={subject.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
+                        <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all">
+                          <CardHeader className="pb-3">
                             <div className="flex items-center justify-between">
-                              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                                {app.icon}
+                              <div className={`text-4xl bg-gradient-to-br ${subject.color} w-14 h-14 rounded-2xl flex items-center justify-center`}>
+                                {subject.icon}
                               </div>
-                              <Badge variant="outline" className="rounded-xl">
-                                {app.category}
-                              </Badge>
+                              <Badge variant="secondary" className="rounded-xl">{subject.grade}</Badge>
                             </div>
                           </CardHeader>
-                          <CardContent className="pb-2">
-                            <CardTitle className="text-lg">{app.name}</CardTitle>
-                            <CardDescription>{app.description}</CardDescription>
+                          <CardContent className="space-y-3">
+                            <div>
+                              <CardTitle className="text-lg">{subject.name}</CardTitle>
+                              <CardDescription className="text-sm">{subject.chapter}</CardDescription>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex justify-between text-sm">
+                                <span className="text-muted-foreground">Progress</span>
+                                <span className="font-semibold">{subject.progress}%</span>
+                              </div>
+                              <Progress value={subject.progress} className="h-2 rounded-xl" />
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {subject.completed}/{subject.quizzes} quizzes completed
+                            </div>
                           </CardContent>
-                          <CardFooter className="flex gap-2">
-                            <Button variant="secondary" className="flex-1 rounded-2xl">
-                              {app.progress < 100 ? "Install" : "Open"}
-                            </Button>
-                            <Button variant="outline" size="icon" className="rounded-2xl">
-                              <Star className="h-4 w-4" />
+                          <CardFooter>
+                            <Button className="w-full rounded-2xl" variant="secondary">
+                              Continue Learning
                             </Button>
                           </CardFooter>
                         </Card>
@@ -795,543 +412,407 @@ export default function DemoApp() {
                     ))}
                   </div>
                 </section>
-              </TabsContent>
 
-              <TabsContent value="files" className="space-y-8 mt-0">
-                <section>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="overflow-hidden rounded-3xl bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 p-8 text-white"
-                  >
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div className="space-y-2">
-                        <h2 className="text-3xl font-bold">Your Creative Files</h2>
-                        <p className="max-w-[600px] text-white/80">
-                          Access, manage, and share all your design files in one place.
-                        </p>
-                      </div>
-                      <div className="flex flex-wrap gap-3">
-                        <Button className="rounded-2xl bg-white/20 backdrop-blur-md hover:bg-white/30">
-                          <Cloud className="mr-2 h-4 w-4" />
-                          Cloud Storage
-                        </Button>
-                        <Button className="rounded-2xl bg-white text-blue-700 hover:bg-white/90">
-                          <Plus className="mr-2 h-4 w-4" />
-                          Upload Files
-                        </Button>
-                      </div>
+                {/* Recent Activity & Upcoming Tests */}
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                  <section className="space-y-4">
+                    <h2 className="text-2xl font-semibold">Recent Quiz Attempts</h2>
+                    <Card className="rounded-3xl">
+                      <CardContent className="p-0">
+                        <div className="divide-y">
+                          {recentQuizzes.map((quiz, index) => (
+                            <motion.div
+                              key={index}
+                              whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                              className="p-4"
+                            >
+                              <div className="flex justify-between items-start mb-2">
+                                <div>
+                                  <h3 className="font-semibold">{quiz.subject}</h3>
+                                  <p className="text-sm text-muted-foreground">{quiz.chapter}</p>
+                                </div>
+                                <Badge className={`rounded-xl ${
+                                  quiz.score >= 90 ? 'bg-green-100 text-green-700' :
+                                  quiz.score >= 75 ? 'bg-blue-100 text-blue-700' :
+                                  'bg-amber-100 text-amber-700'
+                                }`}>
+                                  {quiz.score}%
+                                </Badge>
+                              </div>
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                <span>{quiz.questions} questions</span>
+                                <span>•</span>
+                                <span>{quiz.time}</span>
+                                <span>•</span>
+                                <span>{quiz.date}</span>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </section>
+
+                  <section className="space-y-4">
+                    <h2 className="text-2xl font-semibold">Upcoming Tests</h2>
+                    <div className="space-y-3">
+                      {upcomingTests.map((test, index) => (
+                        <motion.div key={index} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                          <Card className="rounded-3xl">
+                            <CardContent className="p-4">
+                              <div className="flex justify-between items-start mb-2">
+                                <div>
+                                  <h3 className="font-semibold">{test.subject}</h3>
+                                  <p className="text-sm text-muted-foreground">{test.chapter}</p>
+                                </div>
+                                <Badge variant="outline" className={`rounded-xl ${
+                                  test.daysLeft <= 5 ? 'border-red-300 text-red-700' : 'border-blue-300 text-blue-700'
+                                }`}>
+                                  {test.daysLeft} days left
+                                </Badge>
+                              </div>
+                              <div className="flex flex-wrap gap-2 mb-3">
+                                {test.topics.map((topic, i) => (
+                                  <Badge key={i} variant="secondary" className="rounded-lg text-xs">
+                                    {topic}
+                                  </Badge>
+                                ))}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Calendar className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">{test.date}</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
                     </div>
-                  </motion.div>
-                </section>
-
-                <div className="flex flex-wrap gap-3 mb-6">
-                  <Button variant="outline" className="rounded-2xl">
-                    <FileText className="mr-2 h-4 w-4" />
-                    All Files
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Clock className="mr-2 h-4 w-4" />
-                    Recent
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Users className="mr-2 h-4 w-4" />
-                    Shared
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Star className="mr-2 h-4 w-4" />
-                    Favorites
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Trash className="mr-2 h-4 w-4" />
-                    Trash
-                  </Button>
-                  <div className="flex-1"></div>
-                  <div className="relative w-full md:w-auto mt-3 md:mt-0">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="search"
-                      placeholder="Search files..."
-                      className="w-full rounded-2xl pl-9 md:w-[200px]"
-                    />
-                  </div>
+                  </section>
                 </div>
 
+                {/* Learning Videos */}
                 <section className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold">All Files</h2>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="rounded-2xl">
-                        <PanelLeft className="mr-2 h-4 w-4" />
-                        Filter
-                      </Button>
-                      <Button variant="outline" size="sm" className="rounded-2xl">
-                        <ArrowUpDown className="mr-2 h-4 w-4" />
-                        Sort
-                      </Button>
-                    </div>
+                    <h2 className="text-2xl font-semibold">Recommended Videos</h2>
+                    <Button variant="ghost" className="rounded-2xl">Explore</Button>
                   </div>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    {learningVideos.map((video, index) => (
+                      <motion.div key={index} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
+                        <Card className="rounded-3xl overflow-hidden">
+                          <div className="aspect-video bg-gradient-to-br from-indigo-500 to-purple-600 relative">
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Button size="icon" className="h-14 w-14 rounded-full bg-white/90 hover:bg-white">
+                                <Play className="h-6 w-6 text-indigo-600" />
+                              </Button>
+                            </div>
+                            <div className="absolute top-3 right-3">
+                              <Badge className="bg-white/90 text-gray-900 rounded-xl">{video.duration}</Badge>
+                            </div>
+                          </div>
+                          <CardContent className="p-4">
+                            <Badge variant="outline" className="rounded-lg mb-2">{video.subject}</Badge>
+                            <h3 className="font-semibold mb-2">{video.title}</h3>
+                            <div className="flex items-center justify-between text-sm text-muted-foreground">
+                              <span>{video.instructor}</span>
+                              <span>{video.views} views</span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+              </TabsContent>
 
-                  <div className="rounded-3xl border overflow-hidden">
-                    <div className="bg-muted/50 p-3 hidden md:grid md:grid-cols-12 text-sm font-medium">
-                      <div className="col-span-6">Name</div>
-                      <div className="col-span-2">App</div>
-                      <div className="col-span-2">Size</div>
-                      <div className="col-span-2">Modified</div>
-                    </div>
-                    <div className="divide-y">
-                      {recentFiles.map((file) => (
-                        <motion.div
-                          key={file.name}
-                          whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-                          className="p-3 md:grid md:grid-cols-12 items-center flex flex-col md:flex-row gap-3 md:gap-0"
-                        >
-                          <div className="col-span-6 flex items-center gap-3 w-full md:w-auto">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted">
-                              {file.icon}
+              <TabsContent value="subjects" className="space-y-6 mt-0">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-8 text-white"
+                >
+                  <h2 className="text-3xl font-bold mb-2">All Subjects</h2>
+                  <p className="text-white/90">Master your NCERT curriculum with AI-powered learning</p>
+                </motion.div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {subjects.map((subject) => (
+                    <Card key={subject.name} className="rounded-3xl">
+                      <CardHeader>
+                        <div className="flex items-center gap-3">
+                          <div className={`text-5xl bg-gradient-to-br ${subject.color} w-16 h-16 rounded-2xl flex items-center justify-center`}>
+                            {subject.icon}
+                          </div>
+                          <div>
+                            <CardTitle>{subject.name}</CardTitle>
+                            <Badge variant="secondary"className="mt-1">{subject.grade}</Badge>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div>
+                          <div className="text-sm font-medium mb-1">Current Chapter</div>
+                          <div className="text-sm text-muted-foreground">{subject.chapter}</div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span>Overall Progress</span>
+                            <span className="font-semibold">{subject.progress}%</span>
+                          </div>
+                          <Progress value={subject.progress} className="h-2 rounded-xl" />
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Completed Quizzes</span>
+                          <span className="font-medium">{subject.completed}/{subject.quizzes}</span>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="flex gap-2">
+                        <Button className="flex-1 rounded-2xl">Start Learning</Button>
+                        <Button variant="outline" className="rounded-2xl">
+                          <BookOpen className="h-4 w-4" />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="quizzes" className="space-y-6 mt-0">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="overflow-hidden rounded-3xl bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 p-8 text-white"
+                >
+                  <h2 className="text-3xl font-bold mb-2">Practice Quizzes</h2>
+                  <p className="text-white/90">Test your knowledge and track your improvement</p>
+                </motion.div>
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {subjects.map((subject) => (
+                    <Card key={subject.name} className="rounded-3xl">
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <div className="flex items-center gap-3">
+                            <div className={`text-4xl bg-gradient-to-br ${subject.color} w-12 h-12 rounded-2xl flex items-center justify-center`}>
+                              {subject.icon}
                             </div>
                             <div>
-                              <p className="font-medium">{file.name}</p>
-                              {file.shared && (
-                                <div className="flex items-center text-xs text-muted-foreground">
-                                  <Users className="mr-1 h-3 w-3" />
-                                  Shared with {file.collaborators} people
-                                </div>
-                              )}
+                              <CardTitle>{subject.name}</CardTitle>
+                              <CardDescription>{subject.chapter}</CardDescription>
                             </div>
                           </div>
-                          <div className="col-span-2 text-sm md:text-base">{file.app}</div>
-                          <div className="col-span-2 text-sm md:text-base">{file.size}</div>
-                          <div className="col-span-2 flex items-center justify-between w-full md:w-auto">
-                            <span className="text-sm md:text-base">{file.modified}</span>
-                            <div className="flex gap-1">
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl">
-                                <Share2 className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </section>
+                          <Badge className="rounded-xl">{subject.quizzes} quizzes</Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <Progress value={(subject.completed / subject.quizzes) * 100} className="h-2 rounded-xl mb-2" />
+                        <div className="text-sm text-muted-foreground">
+                          {subject.completed} of {subject.quizzes} completed
+                        </div>
+                      </CardContent>
+                      <CardFooter>
+                        <Button className="w-full rounded-2xl">
+                          <Zap className="mr-2 h-4 w-4" />
+                          Take Quiz
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
               </TabsContent>
 
-              <TabsContent value="projects" className="space-y-8 mt-0">
-                <section>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="overflow-hidden rounded-3xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 p-8 text-white"
-                  >
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div className="space-y-2">
-                        <h2 className="text-3xl font-bold">Project Management</h2>
-                        <p className="max-w-[600px] text-white/80">
-                          Organize your creative work into projects and collaborate with your team.
-                        </p>
-                      </div>
-                      <Button className="w-fit rounded-2xl bg-white text-indigo-700 hover:bg-white/90">
-                        <Plus className="mr-2 h-4 w-4" />
-                        New Project
-                      </Button>
-                    </div>
-                  </motion.div>
-                </section>
+              <TabsContent value="materials" className="space-y-6 mt-0">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="overflow-hidden rounded-3xl bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 p-8 text-white"
+                >
+                  <h2 className="text-3xl font-bold mb-2">Study Materials</h2>
+                  <p className="text-white/90">Access NCERT solutions, notes, and reference materials</p>
+                </motion.div>
 
-                <div className="flex flex-wrap gap-3 mb-6">
-                  <Button variant="outline" className="rounded-2xl">
-                    <Layers className="mr-2 h-4 w-4" />
-                    All Projects
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Clock className="mr-2 h-4 w-4" />
-                    Recent
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Users className="mr-2 h-4 w-4" />
-                    Shared
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Archive className="mr-2 h-4 w-4" />
-                    Archived
-                  </Button>
-                  <div className="flex-1"></div>
-                  <div className="relative w-full md:w-auto mt-3 md:mt-0">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="search"
-                      placeholder="Search projects..."
-                      className="w-full rounded-2xl pl-9 md:w-[200px]"
-                    />
-                  </div>
-                </div>
-
-                <section className="space-y-4">
-                  <h2 className="text-2xl font-semibold">Active Projects</h2>
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-                    {projects.map((project) => (
-                      <motion.div key={project.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                        <Card className="overflow-hidden rounded-3xl border hover:border-primary/50 transition-all duration-300">
-                          <CardHeader>
-                            <div className="flex items-center justify-between">
-                              <CardTitle>{project.name}</CardTitle>
-                              <Badge variant="outline" className="rounded-xl">
-                                Due {project.dueDate}
-                              </Badge>
+                <div className="space-y-3">
+                  {studyMaterials.map((material, index) => (
+                    <Card key={index} className="rounded-3xl">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
+                              <FileText className="w-6 h-6 text-primary" />
                             </div>
-                            <CardDescription>{project.description}</CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between text-sm">
-                                <span>Progress</span>
-                                <span>{project.progress}%</span>
-                              </div>
-                              <Progress value={project.progress} className="h-2 rounded-xl" />
-                            </div>
-                            <div className="flex items-center justify-between text-sm text-muted-foreground">
-                              <div className="flex items-center">
-                                <Users className="mr-1 h-4 w-4" />
-                                {project.members} members
-                              </div>
-                              <div className="flex items-center">
-                                <FileText className="mr-1 h-4 w-4" />
-                                {project.files} files
+                            <div>
+                              <h3 className="font-semibold">{material.title}</h3>
+                              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                <Badge variant="outline" className="rounded-lg">{material.subject}</Badge>
+                                <span>{material.pages} pages</span>
+                                <span>•</span>
+                                <span>Updated {material.updated}</span>
                               </div>
                             </div>
-                          </CardContent>
-                          <CardFooter className="flex gap-2">
-                            <Button variant="secondary" className="flex-1 rounded-2xl">
-                              Open Project
-                            </Button>
-                            <Button variant="outline" size="icon" className="rounded-2xl">
-                              <Share2 className="h-4 w-4" />
-                            </Button>
-                          </CardFooter>
-                        </Card>
-                      </motion.div>
-                    ))}
-                    <motion.div whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                      <Card className="flex h-full flex-col items-center justify-center rounded-3xl border border-dashed p-8 hover:border-primary/50 transition-all duration-300">
-                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                          <Plus className="h-6 w-6" />
+                          </div>
+                          <Button variant="outline" className="rounded-2xl">
+                            View
+                          </Button>
                         </div>
-                        <h3 className="text-lg font-medium">Create New Project</h3>
-                        <p className="mb-4 text-center text-sm text-muted-foreground">
-                          Start a new creative project from scratch or use a template
-                        </p>
-                        <Button className="rounded-2xl">New Project</Button>
-                      </Card>
-                    </motion.div>
-                  </div>
-                </section>
-
-                <section className="space-y-4">
-                  <h2 className="text-2xl font-semibold">Project Templates</h2>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    <Card className="overflow-hidden rounded-3xl">
-                      <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 p-6 text-white">
-                        <h3 className="text-lg font-medium">Brand Identity</h3>
-                        <p className="text-sm text-white/80">Complete brand design package</p>
-                      </div>
-                      <CardFooter className="flex justify-between p-4">
-                        <Badge variant="outline" className="rounded-xl">
-                          Popular
-                        </Badge>
-                        <Button variant="ghost" size="sm" className="rounded-xl">
-                          Use Template
-                        </Button>
-                      </CardFooter>
+                      </CardContent>
                     </Card>
-                    <Card className="overflow-hidden rounded-3xl">
-                      <div className="aspect-video bg-gradient-to-br from-amber-500 to-red-600 p-6 text-white">
-                        <h3 className="text-lg font-medium">Marketing Campaign</h3>
-                        <p className="text-sm text-white/80">Multi-channel marketing assets</p>
-                      </div>
-                      <CardFooter className="flex justify-between p-4">
-                        <Badge variant="outline" className="rounded-xl">
-                          New
-                        </Badge>
-                        <Button variant="ghost" size="sm" className="rounded-xl">
-                          Use Template
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                    <Card className="overflow-hidden rounded-3xl">
-                      <div className="aspect-video bg-gradient-to-br from-green-500 to-teal-600 p-6 text-white">
-                        <h3 className="text-lg font-medium">Website Redesign</h3>
-                        <p className="text-sm text-white/80">Complete website design workflow</p>
-                      </div>
-                      <CardFooter className="flex justify-between p-4">
-                        <Badge variant="outline" className="rounded-xl">
-                          Featured
-                        </Badge>
-                        <Button variant="ghost" size="sm" className="rounded-xl">
-                          Use Template
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                    <Card className="overflow-hidden rounded-3xl">
-                      <div className="aspect-video bg-gradient-to-br from-pink-500 to-rose-600 p-6 text-white">
-                        <h3 className="text-lg font-medium">Product Launch</h3>
-                        <p className="text-sm text-white/80">Product launch campaign assets</p>
-                      </div>
-                      <CardFooter className="flex justify-between p-4">
-                        <Badge variant="outline" className="rounded-xl">
-                          Popular
-                        </Badge>
-                        <Button variant="ghost" size="sm" className="rounded-xl">
-                          Use Template
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </div>
-                </section>
+                  ))}
+                </div>
               </TabsContent>
 
-              <TabsContent value="learn" className="space-y-8 mt-0">
-                <section>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="overflow-hidden rounded-3xl bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 p-8 text-white"
-                  >
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div className="space-y-2">
-                        <h2 className="text-3xl font-bold">Learn & Grow</h2>
-                        <p className="max-w-[600px] text-white/80">
-                          Expand your creative skills with tutorials, courses, and resources.
-                        </p>
-                      </div>
-                      <Button className="w-fit rounded-2xl bg-white text-emerald-700 hover:bg-white/90">
-                        <Crown className="mr-2 h-4 w-4" />
-                        Upgrade to Pro
-                      </Button>
-                    </div>
-                  </motion.div>
-                </section>
+              <TabsContent value="progress" className="space-y-6 mt-0">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="overflow-hidden rounded-3xl bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 p-8 text-white"
+                >
+                  <h2 className="text-3xl font-bold mb-2">Your Progress</h2>
+                  <p className="text-white/90">Track your learning journey and achievements</p>
+                </motion.div>
 
-                <div className="flex flex-wrap gap-3 mb-6">
-                  <Button variant="outline" className="rounded-2xl">
-                    <Play className="mr-2 h-4 w-4" />
-                    All Tutorials
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <BookOpen className="mr-2 h-4 w-4" />
-                    Courses
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Lightbulb className="mr-2 h-4 w-4" />
-                    Tips & Tricks
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <TrendingUp className="mr-2 h-4 w-4" />
-                    Trending
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl">
-                    <Bookmark className="mr-2 h-4 w-4" />
-                    Saved
-                  </Button>
-                  <div className="flex-1"></div>
-                  <div className="relative w-full md:w-auto mt-3 md:mt-0">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="search"
-                      placeholder="Search tutorials..."
-                      className="w-full rounded-2xl pl-9 md:w-[200px]"
-                    />
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card className="rounded-3xl col-span-1">
+                    <CardHeader>
+                      <CardTitle>Overall Performance</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="text-center">
+                        <div className="text-5xl font-bold text-primary">73%</div>
+                        <div className="text-sm text-muted-foreground">Average Score</div>
+                      </div>
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Mathematics</span>
+                            <span className="font-semibold">75%</span>
+                          </div>
+                          <Progress value={75} className="h-2 rounded-xl" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Chemistry</span>
+                            <span className="font-semibold">85%</span>
+                          </div>
+                          <Progress value={85} className="h-2 rounded-xl" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Physics</span>
+                            <span className="font-semibold">60%</span>
+                          </div>
+                          <Progress value={60} className="h-2 rounded-xl" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Biology</span>
+                            <span className="font-semibold">70%</span>
+                          </div>
+                          <Progress value={70} className="h-2 rounded-xl" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="rounded-3xl col-span-1 md:col-span-2">
+                    <CardHeader>
+                      <CardTitle>Recent Achievements</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div className="text-center p-4 rounded-2xl bg-yellow-50">
+                          <Trophy className="w-10 h-10 text-yellow-500 mx-auto mb-2" />
+                          <div className="font-semibold">Perfect Score</div>
+                          <div className="text-xs text-muted-foreground">Chemistry Quiz</div>
+                        </div>
+                        <div className="text-center p-4 rounded-2xl bg-blue-50">
+                          <Flame className="w-10 h-10 text-orange-500 mx-auto mb-2" />
+                          <div className="font-semibold">15 Day Streak</div>
+                          <div className="text-xs text-muted-foreground">Keep going!</div>
+                        </div>
+                        <div className="text-center p-4 rounded-2xl bg-green-50">
+                          <Target className="w-10 h-10 text-green-500 mx-auto mb-2" />
+                          <div className="font-semibold">Goal Achieved</div>
+                          <div className="text-xs text-muted-foreground">100 quizzes</div>
+                        </div>
+                        <div className="text-center p-4 rounded-2xl bg-purple-50">
+                          <Star className="w-10 h-10 text-purple-500 mx-auto mb-2" />
+                          <div className="font-semibold">Top Performer</div>
+                          <div className="text-xs text-muted-foreground">This week</div>
+                        </div>
+                        <div className="text-center p-4 rounded-2xl bg-pink-50">
+                          <GraduationCap className="w-10 h-10 text-pink-500 mx-auto mb-2" />
+                          <div className="font-semibold">Quick Learner</div>
+                          <div className="text-xs text-muted-foreground">Fast completion</div>
+                        </div>
+                        <div className="text-center p-4 rounded-2xl bg-indigo-50">
+                          <Award className="w-10 h-10 text-indigo-500 mx-auto mb-2" />
+                          <div className="font-semibold">All Rounder</div>
+                          <div className="text-xs text-muted-foreground">All subjects</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
 
-                <section className="space-y-4">
-                  <h2 className="text-2xl font-semibold">Featured Tutorials</h2>
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {tutorials.slice(0, 3).map((tutorial) => (
-                      <motion.div key={tutorial.title} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                        <Card className="overflow-hidden rounded-3xl">
-                          <div className="aspect-video overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 relative">
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <Button size="icon" variant="secondary" className="h-14 w-14 rounded-full">
-                                <Play className="h-6 w-6" />
-                              </Button>
-                            </div>
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 text-white">
-                              <Badge className="bg-white/20 text-white hover:bg-white/30 rounded-xl">
-                                {tutorial.category}
-                              </Badge>
-                              <h3 className="mt-2 text-lg font-medium">{tutorial.title}</h3>
-                            </div>
-                          </div>
-                          <CardContent className="p-4">
-                            <p className="text-sm text-muted-foreground">{tutorial.description}</p>
-                            <div className="mt-4 flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <Avatar className="h-6 w-6">
-                                  <AvatarFallback>{tutorial.instructor.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <span className="text-sm">{tutorial.instructor}</span>
-                              </div>
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Clock className="h-4 w-4" />
-                                {tutorial.duration}
-                              </div>
-                            </div>
-                          </CardContent>
-                          <CardFooter className="flex items-center justify-between border-t p-4">
-                            <Badge variant="outline" className="rounded-xl">
-                              {tutorial.level}
-                            </Badge>
-                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                              <Eye className="h-4 w-4" />
-                              {tutorial.views} views
-                            </div>
-                          </CardFooter>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold">Popular Courses</h2>
-                    <Button variant="ghost" className="rounded-2xl">
-                      View All
-                    </Button>
-                  </div>
-                  <div className="rounded-3xl border overflow-hidden">
-                    <div className="divide-y">
-                      {tutorials.slice(3, 5).map((tutorial) => (
-                        <motion.div
-                          key={tutorial.title}
-                          whileHover={{ scale: 1.02, y: -5 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="p-4 flex flex-col md:flex-row gap-3"
-                        >
-                          <div className="flex-shrink-0">
-                            <div className="relative h-20 w-20 overflow-hidden rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600">
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <Play className="h-8 w-8 text-white" />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-medium">{tutorial.title}</h3>
-                            <p className="text-sm text-muted-foreground">{tutorial.description}</p>
-                            <div className="mt-2 flex flex-wrap items-center gap-3">
-                              <Badge variant="outline" className="rounded-xl">
-                                {tutorial.level}
-                              </Badge>
-                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                <Clock className="h-3 w-3" />
-                                {tutorial.duration}
-                              </div>
-                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                <Eye className="h-3 w-3" />
-                                {tutorial.views} views
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center">
-                            <Button variant="ghost" size="sm" className="rounded-xl">
-                              Watch Now
-                            </Button>
-                          </div>
-                        </motion.div>
-                      ))}
+                <Card className="rounded-3xl">
+                  <CardHeader>
+                    <CardTitle>Weekly Activity</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Monday</span>
+                        <div className="flex gap-1">
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-gray-200"></div>
+                        </div>
+                        <span className="text-sm text-muted-foreground">3 quizzes</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Tuesday</span>
+                        <div className="flex gap-1">
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-gray-200"></div>
+                          <div className="w-3 h-3 rounded-sm bg-gray-200"></div>
+                        </div>
+                        <span className="text-sm text-muted-foreground">2 quizzes</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Wednesday</span>
+                        <div className="flex gap-1">
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                        </div>
+                        <span className="text-sm text-muted-foreground">4 quizzes</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Thursday</span>
+                        <div className="flex gap-1">
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-gray-200"></div>
+                          <div className="w-3 h-3 rounded-sm bg-gray-200"></div>
+                          <div className="w-3 h-3 rounded-sm bg-gray-200"></div>
+                        </div>
+                        <span className="text-sm text-muted-foreground">1 quiz</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Friday</span>
+                        <div className="flex gap-1">
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-sm bg-gray-200"></div>
+                        </div>
+                        <span className="text-sm text-muted-foreground">3 quizzes</span>
+                      </div>
                     </div>
-                  </div>
-                </section>
-
-                <section className="space-y-4">
-                  <h2 className="text-2xl font-semibold">Learning Paths</h2>
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                    <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
-                          <Badge className="rounded-xl bg-blue-500">Beginner</Badge>
-                          <Award className="h-5 w-5 text-amber-500" />
-                        </div>
-                        <CardTitle className="mt-2">UI/UX Design Fundamentals</CardTitle>
-                        <CardDescription>Master the basics of user interface and experience design</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between text-sm">
-                            <span>8 courses • 24 hours</span>
-                            <span>4.8 ★</span>
-                          </div>
-                          <Progress value={30} className="h-2 rounded-xl" />
-                          <p className="text-xs text-muted-foreground">30% completed</p>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Button variant="secondary" className="w-full rounded-2xl">
-                          Continue Learning
-                        </Button>
-                      </CardFooter>
-                    </Card>
-
-                    <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
-                          <Badge className="rounded-xl bg-amber-500">Intermediate</Badge>
-                          <Award className="h-5 w-5 text-amber-500" />
-                        </div>
-                        <CardTitle className="mt-2">Digital Illustration Mastery</CardTitle>
-                        <CardDescription>Create stunning digital artwork and illustrations</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between text-sm">
-                            <span>12 courses • 36 hours</span>
-                            <span>4.9 ★</span>
-                          </div>
-                          <Progress value={0} className="h-2 rounded-xl" />
-                          <p className="text-xs text-muted-foreground">Not started</p>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Button variant="secondary" className="w-full rounded-2xl">
-                          Start Learning
-                        </Button>
-                      </CardFooter>
-                    </Card>
-
-                    <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
-                          <Badge className="rounded-xl bg-red-500">Advanced</Badge>
-                          <Award className="h-5 w-5 text-amber-500" />
-                        </div>
-                        <CardTitle className="mt-2">Motion Graphics & Animation</CardTitle>
-                        <CardDescription>Create professional motion graphics and animations</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between text-sm">
-                            <span>10 courses • 30 hours</span>
-                            <span>4.7 ★</span>
-                          </div>
-                          <Progress value={0} className="h-2 rounded-xl" />
-                          <p className="text-xs text-muted-foreground">Not started</p>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Button variant="secondary" className="w-full rounded-2xl">
-                          Start Learning
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </div>
-                </section>
+                  </CardContent>
+                </Card>
               </TabsContent>
             </motion.div>
           </AnimatePresence>
@@ -1340,4 +821,3 @@ export default function DemoApp() {
     </>
   )
 }
-

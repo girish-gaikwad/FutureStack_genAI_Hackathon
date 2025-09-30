@@ -1,4 +1,4 @@
-import { BookOpen, Grid, Home, Layers, BarChart3, User, Settings } from 'lucide-react';
+import { BookOpen, Grid, Home, Layers, BarChart3, User, Settings, NotebookPen } from 'lucide-react';
 import { create } from 'zustand';
 
 // Define types for chapters and sidebar items
@@ -41,6 +41,21 @@ const initialSidebarItems: SidebarItem[] = [
         url: "/app",
     },
     {
+        title: "Analytics",
+        icon: <BarChart3 />,
+        url: "/app/analytics",
+    },
+    {
+        title: "Question the Book",
+        icon: <BookOpen />,
+        url: "/app/question-book",
+    },
+    {
+        title: "Quizz",
+        icon: <NotebookPen />,
+        url: "/app/quiz",
+    },
+    {
         title: "Apps",
         icon: <Grid />,
         badge: "2",
@@ -51,38 +66,6 @@ const initialSidebarItems: SidebarItem[] = [
             { title: "Updates", url: "/apps/updates", badge: "2" },
             { title: "Installed", url: "/apps/installed" },
         ],
-    },
-    {
-        title: "Projects",
-        icon: <Layers />,
-        badge: "4",
-        url: "/projects",
-        items: [
-            { title: "Active Projects", url: "/projects/active", badge: "4" },
-            { title: "Archived", url: "/projects/archived" },
-            { title: "Templates", url: "/projects/templates" },
-        ],
-    },
-    {
-        title: "Learn",
-        icon: <BookOpen />,
-        url: "/learn",
-        items: [
-            { title: "Tutorials", url: "/learn/tutorials" },
-            { title: "Courses", url: "/learn/courses" },
-            { title: "Webinars", url: "/learn/webinars" },
-            { title: "Resources", url: "/learn/resources" },
-        ],
-    },
-    {
-        title: "Question the Book",
-        icon: <BookOpen />,
-        url: "/app/question-book",
-    },
-    {
-        title: "Analytics",
-        icon: <BarChart3 />,
-        url: "/app/analytics",
     },
 
 ];
