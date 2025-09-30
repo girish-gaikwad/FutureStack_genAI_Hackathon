@@ -355,9 +355,9 @@ function QuizSection() {
     const flaggedCount = flaggedQuestions.filter(f => f).length
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/20">
+        <div className="min-h-screen bg-background">
             {/* Top Bar */}
-            <div className="sticky top-0 z-20 bg-white border-b shadow-sm">
+            <div className="sticky top-0 z-20  border-b shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 py-3">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
