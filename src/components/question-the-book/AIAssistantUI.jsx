@@ -174,19 +174,35 @@ export default function AIAssistantUI() {
     setThinkingConvId(convId);
 
     const currentConvId = convId;
-    setTimeout(() => {
-      // Always clear thinking state and generate response for this specific conversation
+    
+    // Make API call to your endpoint
+    fetch('https://navanihk-wemakedev.hf.space/query', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: content,
+        book: "tamilNadu-computerScience.pdf"
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
       setIsThinking(false);
       setThinkingConvId(null);
+      
+      // Extract the message content from the API response
+      const responseContent = data.message || "Sorry, I couldn't process your request.";
+      
       setConversations((prev) =>
         prev.map((c) => {
           if (c.id !== currentConvId) return c;
-          const ack = `Got it — I'll help with that.`;
           const asstMsg = {
             id: Math.random().toString(36).slice(2),
             role: "assistant",
-            content: ack,
+            content: responseContent,
             createdAt: new Date().toISOString(),
+            sources: data.sources || [], // Store sources for potential future use
           };
           const msgs = [...(c.messages || []), asstMsg];
           return {
@@ -198,7 +214,32 @@ export default function AIAssistantUI() {
           };
         })
       );
-    }, 2000);
+    })
+    .catch(error => {
+      console.error('Error calling API:', error);
+      setIsThinking(false);
+      setThinkingConvId(null);
+      
+      setConversations((prev) =>
+        prev.map((c) => {
+          if (c.id !== currentConvId) return c;
+          const errorMsg = {
+            id: Math.random().toString(36).slice(2),
+            role: "assistant",
+            content: "Sorry, I encountered an error while processing your request. Please try again.",
+            createdAt: new Date().toISOString(),
+          };
+          const msgs = [...(c.messages || []), errorMsg];
+          return {
+            ...c,
+            messages: msgs,
+            updatedAt: new Date().toISOString(),
+            messageCount: msgs.length,
+            preview: errorMsg.content.slice(0, 80),
+          };
+        })
+      );
+    });
   }
 
   function editMessage(convId, messageId, newContent) {
