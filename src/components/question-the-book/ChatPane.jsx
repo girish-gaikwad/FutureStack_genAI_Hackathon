@@ -2,6 +2,7 @@
 import { useState, forwardRef, useImperativeHandle, useRef } from "react"
 import { Pencil, RefreshCw, Check, X, Square, PanelLeft } from "lucide-react"
 import Message from "./Message"
+import StyledMessage from "./StyledMessage"
 import Composer from "./Composer"
 import { cls, timeAgo } from "./utils"
 import { Button } from "../ui/button"
@@ -141,10 +142,14 @@ const ChatPane = forwardRef(function ChatPane(
                     </div>
                   </div>
                 ) : (
-                  <Message role={m.role}>
-                    <div className="whitespace-pre-wrap">{m.content}</div>
+                  <div>
+                    <StyledMessage 
+                      role={m.role} 
+                      content={m.content} 
+                      sources={m.sources}
+                    />
                     {m.role === "user" && (
-                      <div className="mt-1 flex gap-2 text-[11px] text-zinc-500">
+                      <div className="mt-1 flex gap-2 text-[11px] text-zinc-500 justify-end">
                         <button className="inline-flex items-center gap-1 hover:underline" onClick={() => startEdit(m)}>
                           <Pencil className="h-3.5 w-3.5" /> Edit
                         </button>
@@ -156,7 +161,7 @@ const ChatPane = forwardRef(function ChatPane(
                         </button>
                       </div>
                     )}
-                  </Message>
+                  </div>
                 )}
               </div>
             ))}
