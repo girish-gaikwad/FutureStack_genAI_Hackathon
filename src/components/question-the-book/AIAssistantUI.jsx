@@ -156,6 +156,10 @@ export default function AIAssistantUI() {
       createdAt: now,
     };
 
+    // Get current conversation to access message history
+    const currentConversation = conversations.find((c) => c.id === convId);
+    const existingMessages = currentConversation?.messages || [];
+
     setConversations((prev) =>
       prev.map((c) => {
         if (c.id !== convId) return c;
@@ -175,6 +179,18 @@ export default function AIAssistantUI() {
 
     const currentConvId = convId;
     
+    // Prepare message history for API call
+    const messageHistory = existingMessages.map(msg => ({
+      role: msg.role,
+      content: msg.content
+    }));
+
+    // Add the current user message to the history
+    messageHistory.push({
+      role: "user",
+      content: content
+    });
+    
     // Make API call to your endpoint
     fetch('https://navanihk-wemakedev.hf.space/query', {
       method: 'POST',
@@ -183,6 +199,7 @@ export default function AIAssistantUI() {
       },
       body: JSON.stringify({
         query: content,
+        message: messageHistory,
         book: "tamilNadu-computerScience.pdf"
       })
     })
