@@ -273,33 +273,46 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
                       <h3 className="text-lg font-semibold mb-2">Choose your subjects</h3>
                       <p className="text-muted-foreground">Select the subjects you want to study</p>
                     </div>
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-60 overflow-y-auto items-stretch">
+  {subjects.map((subject) => (
+    <motion.div 
+      key={subject.id}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className="h-full relative group" // 👈 group for hover
+    >
+      <Label
+        htmlFor={subject.id}
+        className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 w-full h-full min-h-[60px] ${
+          selectedSubjects.includes(subject.id)
+            ? "border-green-200 bg-green-50/50 dark:bg-green-900/10"
+            : "hover:border-gray-300 hover:bg-gray-50/50 dark:hover:bg-gray-900/10"
+        }`}
+      >
+        <div className="flex items-center justify-center w-5 h-5 flex-shrink-0">
+          <Checkbox
+            id={subject.id}
+            checked={selectedSubjects.includes(subject.id)}
+            onCheckedChange={() => handleSubjectToggle(subject.id)}
+            className="w-4 h-4"
+          />
+        </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-60 overflow-y-auto">
-                      {subjects.map((subject) => (
-                        <motion.div 
-                          key={subject.id}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <Label
-                            htmlFor={subject.id}
-                            className={`flex items-center space-x-3 p-3 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
-                              selectedSubjects.includes(subject.id)
-                                ? "border-green-200 bg-green-50/50 dark:bg-green-900/10"
-                                : "hover:border-gray-300 hover:bg-gray-50/50 dark:hover:bg-gray-900/10"
-                            }`}
-                          >
-                            <Checkbox
-                              id={subject.id}
-                              checked={selectedSubjects.includes(subject.id)}
-                              onCheckedChange={() => handleSubjectToggle(subject.id)}
-                            />
-                            <span className="text-lg">{subject.icon}</span>
-                            <span className="font-medium text-sm">{subject.name}</span>
-                          </Label>
-                        </motion.div>
-                      ))}
-                    </div>
+        <div className="flex-1 min-w-0 flex items-center relative">
+          <span className="font-medium text-sm truncate">
+            {subject.name}
+          </span>
+
+          {/* Tooltip on hover */}
+          <span className="absolute left-0 top-full mt-1 w-max max-w-xs px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-normal z-10">
+            {subject.name}
+          </span>
+        </div>
+      </Label>
+    </motion.div>
+  ))}
+</div>
+
 
                     <div className="flex justify-center pt-4">
                       <Button
