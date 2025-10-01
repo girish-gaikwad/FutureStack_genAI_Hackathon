@@ -40,19 +40,39 @@ export function ChapterSwitcher({
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [newChapterName, setNewChapterName] = useState("")
   const [newChapterDesc, setNewChapterDesc] = useState("")
+  const [selectedBoard, setSelectedBoard] = useState("")
+  const [subjects, setSubjects] = useState<string[]>([])
+  const [subjectInput, setSubjectInput] = useState("")
+  const sampleSubjects = ["Physics", "Chemistry", "Mathematics", "Biology", "English", "Computer Science"]
+  const [pdfFile, setPdfFile] = useState<File | null>(null)
 
-  const handleCreateChapter = () => {
-    if (newChapterName.trim()) {
-      onCreateChapter({ name: newChapterName, description: newChapterDesc })
-      setSelectedChapter(newChapterName)
-      setShowCreateDialog(false)
-      setNewChapterName("")
-      setNewChapterDesc("")
-      setIsOpen(false)
+  const handleAddSubject = () => {
+    if (subjectInput.trim() && !subjects.includes(subjectInput.trim())) {
+      setSubjects([...subjects, subjectInput.trim()])
+      setSubjectInput("")
     }
   }
 
-  const selectedChapterObj = chapters.find(ch => ch.name === selectedChapter)
+  const handleRemoveSubject = (subject: string) => {
+    setSubjects(subjects.filter(s => s !== subject))
+  }
+
+  const handleCreateChapter = () => {
+    if (!newChapterName.trim() || !selectedBoard || subjects.length === 0) return
+    if (selectedBoard === "Custom" && !pdfFile) return
+    onCreateChapter({
+      name: newChapterName,
+      description: `${newChapterDesc}\nBoard: ${selectedBoard}\nSubjects: ${subjects.join(", ")}${selectedBoard === "Custom" && pdfFile ? "\nPDF: " + pdfFile.name : ""}`
+    })
+    setSelectedChapter(newChapterName)
+    setShowCreateDialog(false)
+    setNewChapterName("")
+    setNewChapterDesc("")
+    setSelectedBoard("")
+    setSubjects([])
+    setPdfFile(null)
+    setIsOpen(false)
+  }
 
   return (
     <>
@@ -131,11 +151,11 @@ export function ChapterSwitcher({
       </Popover>
 
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Create New Chapter</DialogTitle>
             <DialogDescription>
-              Add a new chapter to organize your content. Give it a name and optional description.
+              Select your board, add subjects, and (for custom) upload your book PDF.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -146,13 +166,80 @@ export function ChapterSwitcher({
                 value={newChapterName}
                 onChange={(e) => setNewChapterName(e.target.value)}
                 placeholder="e.g., Chapter 1"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && newChapterName.trim()) {
-                    handleCreateChapter()
-                  }
-                }}
               />
             </div>
+            <div className="grid gap-2">
+              <Label htmlFor="board">Board</Label>
+              <select
+                id="board"
+                value={selectedBoard}
+                onChange={e => setSelectedBoard(e.target.value)}
+                className="border rounded-md px-2 py-1"
+              >
+                <option value="">Select Board</option>
+                <option value="CBSE">CBSE</option>
+                <option value="TN Matric">TN Matric</option>
+                <option value="Custom">Custom</option>
+              </select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="subjects">Subjects</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="subjects"
+                  value={subjectInput}
+                  onChange={e => setSubjectInput(e.target.value)}
+                  placeholder="Add subject"
+                  onKeyDown={e => {
+                    if (e.key === "Enter") handleAddSubject()
+                  }}
+                />
+                <Button type="button" onClick={handleAddSubject} disabled={!subjectInput.trim()}>
+                  Add
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {subjects.map(subject => (
+                  <span key={subject} className="px-2 py-1 bg-blue-100 rounded text-xs flex items-center gap-1">
+                    {subject}
+                    <button type="button" className="ml-1 text-red-500" onClick={() => handleRemoveSubject(subject)}>
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {sampleSubjects.map(suggestion => (
+                  <Button
+                    key={suggestion}
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    className="rounded-full text-xs px-3"
+                    onClick={() => {
+                      if (!subjects.includes(suggestion)) setSubjects([...subjects, suggestion])
+                    }}
+                    disabled={subjects.includes(suggestion)}
+                  >
+                    {suggestion}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            {selectedBoard === "Custom" && (
+              <div className="grid gap-2">
+                <Label htmlFor="pdf">Upload Book PDF</Label>
+                <Input
+                  id="pdf"
+                  type="file"
+                  accept="application/pdf"
+                  onChange={e => setPdfFile(e.target.files?.[0] || null)}
+                />
+                {pdfFile && (
+                  <span className="text-xs text-green-600">Selected: {pdfFile.name}</span>
+                )}
+              </div>
+            )}
             <div className="grid gap-2">
               <Label htmlFor="description">Description (Optional)</Label>
               <Textarea
@@ -171,13 +258,21 @@ export function ChapterSwitcher({
                 setShowCreateDialog(false)
                 setNewChapterName("")
                 setNewChapterDesc("")
+                setSelectedBoard("")
+                setSubjects([])
+                setPdfFile(null)
               }}
             >
               Cancel
             </Button>
             <Button
               onClick={handleCreateChapter}
-              disabled={!newChapterName.trim()}
+              disabled={
+                !newChapterName.trim() ||
+                !selectedBoard ||
+                subjects.length === 0 ||
+                (selectedBoard === "Custom" && !pdfFile)
+              }
             >
               Create Chapter
             </Button>
