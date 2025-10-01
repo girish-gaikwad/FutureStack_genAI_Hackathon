@@ -35,6 +35,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useAppStore } from "@/stores/appsidebarStore"
+import OnboardingModal from "@/components/app/OnboardingModal"
 
 // Student subjects with progress
 const subjects = [
@@ -206,6 +207,21 @@ export default function StudentDashboard() {
   const { sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpen } = useAppStore()
   const [notifications, setNotifications] = useState(3)
   const [streakDays, setStreakDays] = useState(15)
+
+  const [showOnboarding, setShowOnboarding] = useState(false)
+
+  useEffect(() => {
+    // Check if onboarding has been completed
+    const onboardingCompleted = localStorage.getItem("onboarding_completed")
+    if (!onboardingCompleted) {
+      setShowOnboarding(true)
+    }
+  }, [])
+
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false)
+  }
+
 
   return (
     <>
@@ -818,6 +834,11 @@ export default function StudentDashboard() {
           </AnimatePresence>
         </Tabs>
       </main>
+      
+      <OnboardingModal 
+        isOpen={showOnboarding} 
+        onClose={handleCloseOnboarding} 
+      />
     </>
   )
 }
