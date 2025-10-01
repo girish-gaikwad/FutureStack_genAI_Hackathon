@@ -142,7 +142,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
     <AnimatePresence>
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={onClose}>
-          <DialogContent className="max-w-2xl border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 backdrop-blur-xl rounded-3xl shadow-2xl">
+          <DialogContent className="max-w-2xl border-0 bg-background/95 backdrop-blur-xl rounded-3xl shadow-2xl">
             <motion.div
               variants={modalVariants}
               initial="hidden"
