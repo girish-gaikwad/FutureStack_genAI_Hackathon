@@ -62,9 +62,9 @@ function QuizPage() {
             iconBg: "bg-emerald-100"
         },
         {
-            name: "History",
+            name: "Computer Science",
             icon: <Award className="text-amber-600" />,
-            chapter: "Modern India",
+            chapter: "Basics of Programming",
             totalQuizzes: 6,
             completedQuizzes: 3,
             averageScore: 75,

@@ -16,19 +16,12 @@ import {
     Clock,
     Eye, EyeOff,
     Flag,
-    Info, Loader2, Maximize2,
+    Info, Maximize2,
     Timer,
     Trophy,
     X
 } from 'lucide-react'
 import { useEffect, useState } from "react"
-
-interface ApiQuestion {
-    question: string
-    topic: string
-    answer: string
-    options: string[]
-}
 
 interface Question {
     id: number
@@ -41,14 +34,94 @@ interface Question {
     chapter: string
 }
 
-function QuizSection() {
-    const [questions, setQuestions] = useState<Question[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+const physicsQuestions: Question[] = [
+    {
+        id: 1,
+        question: "A body of mass 5 kg is moving with a velocity of 10 m/s. What is its momentum?",
+        options: ["25 kg⋅m/s", "50 kg⋅m/s", "75 kg⋅m/s", "100 kg⋅m/s"],
+        correctAnswer: 1,
+        explanation: "Momentum (p) = mass × velocity = 5 kg × 10 m/s = 50 kg⋅m/s",
+        difficulty: "Easy",
+        subject: "Physics",
+        chapter: "Laws of Motion"
+    },
+    {
+        id: 2,
+        question: "The SI unit of electric potential is:",
+        options: ["Ampere", "Coulomb", "Volt", "Ohm"],
+        correctAnswer: 2,
+        explanation: "Volt is the SI unit of electric potential. 1 Volt = 1 Joule/Coulomb",
+        difficulty: "Easy",
+        subject: "Physics",
+        chapter: "Current Electricity"
+    },
+    {
+        id: 3,
+        question: "If a convex lens of focal length 20 cm forms a real image at 60 cm, what is the object distance?",
+        options: ["15 cm", "20 cm", "30 cm", "40 cm"],
+        correctAnswer: 2,
+        explanation: "Using lens formula: 1/f = 1/v - 1/u, where f=20cm, v=60cm. Solving: 1/20 = 1/60 - 1/u, u = 30 cm",
+        difficulty: "Medium",
+        subject: "Physics",
+        chapter: "Ray Optics"
+    },
+    {
+        id: 4,
+        question: "The work function of a metal is 3.0 eV. What is the threshold frequency? (h = 4.14 × 10⁻¹⁵ eV⋅s)",
+        options: ["6.25 × 10¹⁴ Hz", "7.25 × 10¹⁴ Hz", "8.25 × 10¹⁴ Hz", "9.25 × 10¹⁴ Hz"],
+        correctAnswer: 1,
+        explanation: "Threshold frequency ν₀ = W/h = 3.0/(4.14 × 10⁻¹⁵) = 7.25 × 10¹⁴ Hz",
+        difficulty: "Medium",
+        subject: "Physics",
+        chapter: "Dual Nature of Radiation"
+    },
+    {
+        id: 5,
+        question: "A capacitor of capacitance 100 μF is charged to 200 V. What is the energy stored?",
+        options: ["1 J", "2 J", "3 J", "4 J"],
+        correctAnswer: 1,
+        explanation: "Energy = ½CV² = ½ × 100 × 10⁻⁶ × (200)² = 2 J",
+        difficulty: "Medium",
+        subject: "Physics",
+        chapter: "Electrostatic Potential"
+    },
+    {
+        id: 6,
+        question: "In Young's double slit experiment, the fringe width is 0.5 mm for light of wavelength 600 nm. If the wavelength is changed to 400 nm, what will be the new fringe width?",
+        options: ["0.25 mm", "0.33 mm", "0.50 mm", "0.75 mm"],
+        correctAnswer: 1,
+        explanation: "Fringe width β ∝ λ. So β₂/β₁ = λ₂/λ₁, β₂ = 0.5 × (400/600) = 0.33 mm",
+        difficulty: "Hard",
+        subject: "Physics",
+        chapter: "Wave Optics"
+    },
+    {
+        id: 7,
+        question: "A wire of resistance 10 Ω is stretched to twice its original length. What is its new resistance?",
+        options: ["20 Ω", "30 Ω", "40 Ω", "50 Ω"],
+        correctAnswer: 2,
+        explanation: "When length doubles, area becomes half. R ∝ L/A, so new R = 4 × original R = 40 Ω",
+        difficulty: "Hard",
+        subject: "Physics",
+        chapter: "Current Electricity"
+    },
+    {
+        id: 8,
+        question: "What is the dimensional formula for Planck's constant?",
+        options: ["[ML²T⁻¹]", "[ML²T⁻²]", "[MLT⁻¹]", "[ML²T⁻³]"],
+        correctAnswer: 0,
+        explanation: "Planck's constant h = E/ν. Dimension of Energy/Frequency = [ML²T⁻²]/[T⁻¹] = [ML²T⁻¹]",
+        difficulty: "Hard",
+        subject: "Physics",
+        chapter: "Units and Measurements"
+    }
+]
+
+function QuizSectionSample() {
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
-    const [answers, setAnswers] = useState<(number | null)[]>([])
-    const [flaggedQuestions, setFlaggedQuestions] = useState<boolean[]>([])
+    const [answers, setAnswers] = useState<(number | null)[]>(Array(physicsQuestions.length).fill(null))
+    const [flaggedQuestions, setFlaggedQuestions] = useState<boolean[]>(Array(physicsQuestions.length).fill(false))
     const [showFeedback, setShowFeedback] = useState(false)
     const [quizCompleted, setQuizCompleted] = useState(false)
     const [timeLeft, setTimeLeft] = useState(1800) // 30 minutes
@@ -57,56 +130,7 @@ function QuizSection() {
     const [showWarning, setShowWarning] = useState(false)
 
     useEffect(() => {
-        fetchQuestions()
-    }, [])
-
-    const fetchQuestions = async () => {
-        try {
-            setLoading(true)
-            const response = await fetch('https://navanihk-wemakedev.hf.space/quizz', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    book: "tamilNadu-computerScience.pdf"
-                })
-            })
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch questions')
-            }
-
-            const data = await response.json()
-            const apiQuestions = data.message.questions as ApiQuestion[]
-
-            // Transform API questions to our format
-            const transformedQuestions: Question[] = apiQuestions.map((q, index) => {
-                const correctAnswerIndex = q.options.findIndex(opt => opt === q.answer)
-                return {
-                    id: index + 1,
-                    question: q.question,
-                    options: q.options,
-                    correctAnswer: correctAnswerIndex >= 0 ? correctAnswerIndex : 0,
-                    explanation: `Correct answer: ${q.answer}`,
-                    difficulty: index % 3 === 0 ? 'Easy' : index % 3 === 1 ? 'Medium' : 'Hard',
-                    subject: 'Computer Science',
-                    chapter: q.topic
-                }
-            })
-
-            setQuestions(transformedQuestions)
-            setAnswers(Array(transformedQuestions.length).fill(null))
-            setFlaggedQuestions(Array(transformedQuestions.length).fill(false))
-            setLoading(false)
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to load quiz')
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        if (quizCompleted || questions.length === 0) return
+        if (quizCompleted) return
 
         const timer = setInterval(() => {
             setTimeLeft((prev) => {
@@ -120,7 +144,7 @@ function QuizSection() {
         }, 1000)
 
         return () => clearInterval(timer)
-    }, [quizCompleted, questions.length])
+    }, [quizCompleted])
 
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60)
@@ -136,7 +160,7 @@ function QuizSection() {
     }
 
     const handleNext = () => {
-        if (currentQuestion < questions.length - 1) {
+        if (currentQuestion < physicsQuestions.length - 1) {
             setCurrentQuestion(currentQuestion + 1)
             setSelectedAnswer(answers[currentQuestion + 1])
             setShowExplanation(false)
@@ -165,7 +189,7 @@ function QuizSection() {
 
     const calculateScore = () => {
         return answers.reduce((total, answer, index) => {
-            if (answer === questions[index].correctAnswer) return total + 1
+            if (answer === physicsQuestions[index].correctAnswer) return total + 1
             return total
         }, 0)
     }
@@ -177,61 +201,17 @@ function QuizSection() {
     const resetQuiz = () => {
         setCurrentQuestion(0)
         setSelectedAnswer(null)
-        setAnswers(Array(questions.length).fill(null))
-        setFlaggedQuestions(Array(questions.length).fill(false))
+        setAnswers(Array(physicsQuestions.length).fill(null))
+        setFlaggedQuestions(Array(physicsQuestions.length).fill(false))
         setShowFeedback(false)
         setQuizCompleted(false)
         setTimeLeft(1800)
         setShowExplanation(false)
-        fetchQuestions()
-    }
-
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30 flex items-center justify-center">
-                <Card className="rounded-3xl p-8">
-                    <CardContent className="flex flex-col items-center gap-4">
-                        <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
-                        <h2 className="text-xl font-semibold">Loading Quiz Questions...</h2>
-                        <p className="text-muted-foreground">Please wait while we fetch your questions</p>
-                    </CardContent>
-                </Card>
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30 flex items-center justify-center p-4">
-                <Card className="rounded-3xl max-w-md">
-                    <CardContent className="p-8 text-center space-y-4">
-                        <AlertTriangle className="w-12 h-12 text-red-600 mx-auto" />
-                        <h2 className="text-xl font-semibold text-red-600">Error Loading Quiz</h2>
-                        <p className="text-muted-foreground">{error}</p>
-                        <Button onClick={fetchQuestions} className="rounded-xl">
-                            Try Again
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
-        )
-    }
-
-    if (questions.length === 0) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30 flex items-center justify-center">
-                <Card className="rounded-3xl p-8">
-                    <CardContent className="text-center">
-                        <p className="text-muted-foreground">No questions available</p>
-                    </CardContent>
-                </Card>
-            </div>
-        )
     }
 
     if (quizCompleted) {
         const finalScore = calculateScore()
-        const percentage = (finalScore / questions.length) * 100
+        const percentage = (finalScore / physicsQuestions.length) * 100
         const timeTaken = 1800 - timeLeft
 
         return (
@@ -250,7 +230,7 @@ function QuizSection() {
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
                                     <Card className="rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100/50">
                                         <CardContent className="p-6 text-center">
-                                            <div className="text-4xl font-bold text-blue-600">{finalScore}/{questions.length}</div>
+                                            <div className="text-4xl font-bold text-blue-600">{finalScore}/{physicsQuestions.length}</div>
                                             <div className="text-sm text-muted-foreground mt-2">Questions Correct</div>
                                         </CardContent>
                                     </Card>
@@ -289,7 +269,7 @@ function QuizSection() {
                                 </div>
                                 <div className="text-center p-4 bg-red-50 rounded-xl">
                                     <X className="w-8 h-8 text-red-600 mx-auto mb-2" />
-                                    <div className="font-bold text-2xl text-red-600">{questions.length - finalScore}</div>
+                                    <div className="font-bold text-2xl text-red-600">{physicsQuestions.length - finalScore}</div>
                                     <div className="text-sm text-muted-foreground">Incorrect</div>
                                 </div>
                                 <div className="text-center p-4 bg-amber-50 rounded-xl">
@@ -299,7 +279,7 @@ function QuizSection() {
                                 </div>
                                 <div className="text-center p-4 bg-blue-50 rounded-xl">
                                     <Timer className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                                    <div className="font-bold text-2xl text-blue-600">{Math.round(timeTaken / questions.length)}s</div>
+                                    <div className="font-bold text-2xl text-blue-600">{Math.round(timeTaken / physicsQuestions.length)}s</div>
                                     <div className="text-sm text-muted-foreground">Avg per Q</div>
                                 </div>
                             </div>
@@ -312,7 +292,7 @@ function QuizSection() {
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-3">
-                                {questions.map((q, index) => (
+                                {physicsQuestions.map((q, index) => (
                                     <div key={q.id} className={`p-4 rounded-xl border-2 ${answers[index] === q.correctAnswer
                                         ? 'bg-green-50 border-green-200'
                                         : 'bg-red-50 border-red-200'
@@ -361,27 +341,30 @@ function QuizSection() {
                         <Button onClick={resetQuiz} size="lg" className="rounded-2xl">
                             Retake Quiz
                         </Button>
+                        <Button variant="outline" size="lg" className="rounded-2xl">
+                            Back to Dashboard
+                        </Button>
                     </div>
                 </div>
             </div>
         )
     }
 
-    const currentQ = questions[currentQuestion]
+    const currentQ = physicsQuestions[currentQuestion]
     const answeredCount = answers.filter(a => a !== null).length
     const flaggedCount = flaggedQuestions.filter(f => f).length
 
     return (
         <div className="min-h-screen bg-background">
             {/* Top Bar */}
-            <div className="sticky top-0 z-20 bg-background border-b shadow-sm">
+            <div className="sticky top-0 z-20  border-b shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 py-3">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                             <BookOpen className="w-6 h-6 text-blue-600" />
                             <div>
-                                <h1 className="font-semibold">Computer Science Quiz</h1>
-                                <p className="text-xs text-muted-foreground">Tamil Nadu Board</p>
+                                <h1 className="font-semibold">NCERT Physics Quiz</h1>
+                                <p className="text-xs text-muted-foreground">Class 12 - Full Syllabus</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
@@ -425,7 +408,7 @@ function QuizSection() {
                         </CardHeader>
                         <CardContent>
                             <div className="grid grid-cols-4 gap-2">
-                                {questions.map((_, index) => (
+                                {physicsQuestions.map((_, index) => (
                                     <Button
                                         key={index}
                                         variant={index === currentQuestion ? "default" : "outline"}
@@ -445,11 +428,11 @@ function QuizSection() {
                             <div className="space-y-2 text-sm">
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Answered:</span>
-                                    <span className="font-semibold">{answeredCount}/{questions.length}</span>
+                                    <span className="font-semibold">{answeredCount}/{physicsQuestions.length}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Not Answered:</span>
-                                    <span className="font-semibold">{questions.length - answeredCount}</span>
+                                    <span className="font-semibold">{physicsQuestions.length - answeredCount}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Flagged:</span>
@@ -483,7 +466,7 @@ function QuizSection() {
                                     </Button>
                                 </div>
                                 <div className="flex items-center justify-between text-sm text-muted-foreground">
-                                    <span>Question {currentQuestion + 1} of {questions.length}</span>
+                                    <span>Question {currentQuestion + 1} of {physicsQuestions.length}</span>
                                     <span>Marks: 4</span>
                                 </div>
                             </CardHeader>
@@ -560,7 +543,7 @@ function QuizSection() {
                                     >
                                         Clear Response
                                     </Button>
-                                    {currentQuestion < questions.length - 1 ? (
+                                    {currentQuestion < physicsQuestions.length - 1 ? (
                                         <Button onClick={handleNext} className="rounded-xl">
                                             Next
                                             <ChevronRight className="w-4 h-4 ml-2" />
@@ -592,4 +575,4 @@ function QuizSection() {
     )
 }
 
-export default QuizSection
+export default QuizSectionSample
