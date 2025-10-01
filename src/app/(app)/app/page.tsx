@@ -207,6 +207,7 @@ export default function StudentDashboard() {
   const { sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpen } = useAppStore()
   const [notifications, setNotifications] = useState(3)
   const [streakDays, setStreakDays] = useState(15)
+
   const [showOnboarding, setShowOnboarding] = useState(false)
 
   useEffect(() => {
@@ -220,6 +221,7 @@ export default function StudentDashboard() {
   const handleCloseOnboarding = () => {
     setShowOnboarding(false)
   }
+
 
   return (
     <>
