@@ -1,4 +1,4 @@
-import { BookOpen, Grid, Home, Layers, BarChart3, User, Settings, NotebookPen } from 'lucide-react';
+import { BookOpen, Grid, Home, Layers, BarChart3, User, Settings, NotebookPen, SpeakerIcon, MessageSquareQuote } from 'lucide-react';
 import { create } from 'zustand';
 
 // Define types for chapters and sidebar items
@@ -49,6 +49,11 @@ const initialSidebarItems: SidebarItem[] = [
         title: "Question the Book",
         icon: <BookOpen />,
         url: "/app/question-book",
+    },
+    {
+        title: "convo AI",
+        icon: <MessageSquareQuote />,
+        url: "/app/agent",
     },
     {
         title: "Quizz",

@@ -36,7 +36,7 @@ export default function Home() {
 
     const url = new URL(
       process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT ??
-        "/api/connection-details",
+      "/api/connection-details",
       window.location.origin
     );
 
@@ -59,7 +59,6 @@ export default function Home() {
 
   return (
     <main
-      data-lk-theme="default"
       className="h-screen grid content-center bg-[var(--lk-bg)]"
     >
       <LiveKitRoom
@@ -79,6 +78,9 @@ export default function Home() {
           onConnectButtonClicked={onConnectButtonClicked}
           agentState={agentState}
         />
+        <p className="text-center text-gray-500">
+          Click the button above to start a conversation with the agent.
+        </p>
         <RoomAudioRenderer />
         <NoAgentNotification state={agentState} />
       </LiveKitRoom>
@@ -128,14 +130,16 @@ function ControlBar(props: {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, top: "-10px" }}
             transition={{ duration: 1, ease: [0.09, 1.04, 0.245, 1.055] }}
-            className="uppercase absolute left-1/2 -translate-x-1/2 px-4 py-2 bg-white text-black rounded-md"
+            className="uppercase absolute left-1/2 -translate-x-1/2 px-4 py-2 bg-white text-black shadow-2xl rounded-full font-bold hover:bg-gray-200 active:scale-95 "
             onClick={() => props.onConnectButtonClicked()}
           >
             Start a conversation
           </motion.button>
+
         )}
       </AnimatePresence>
       <AnimatePresence>
+        
         {props.agentState !== "disconnected" &&
           props.agentState !== "connecting" && (
             <motion.div
