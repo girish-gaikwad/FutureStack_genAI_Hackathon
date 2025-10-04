@@ -3,8 +3,7 @@ import { Inter, Instrument_Serif } from "next/font/google"
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Car } from "lucide-react";
-
-
+import "@livekit/components-styles";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
