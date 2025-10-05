@@ -7,17 +7,7 @@
     <a href="LICENSE">
         <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
     </a>
-    <a href="https://nextjs.org/">
-        <img src="https://img.shields.io/badge/Next.js-15.5.4-black?style=for-the-badge&logo=next.js" alt="Next.js" />
-    </a>
-    <a href="https://reactjs.org/">
-        <img src="https://img.shields.io/badge/React-19.1.0-blue?style=for-the-badge&logo=react" alt="React" />
-    </a>
-    <a href="https://tailwindcss.com/">
-        <img src="https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS" />
-    </a>
 </div>
-
 
 StudySnap is a revolutionary AI-powered learning platform designed to support both students and educational institutions in their digital transformation journey. Built with accessibility and affordability in mind, StudySnap provides an intelligent, scalable alternative to expensive educational platforms.
 
@@ -25,48 +15,20 @@ StudySnap is a revolutionary AI-powered learning platform designed to support bo
 
 ## 🌟 Key Features
 
-### 🤖 **Textbook-Grounded AI Chatbot**
-
-- Answers questions directly from official textbooks
-- No need for external solution books
-- Context-aware responses based on curriculum content
-
-### 📝 **Intelligent Quiz Generator**
-
-- AI-powered quiz creation from study material
-- Difficulty levels: Easy, Medium, Hard
-- Personalized based on exam preparation needs
-
-### 🎙️ **Voice Learning Agent**
-
-- Natural conversation with textbooks
-- Voice-based learning for enhanced accessibility
-- Interactive study sessions
-
-### 📊 **Multi-Board Support**
-
-- CBSE, ICSE, TN Matric board coverage
-- Custom textbook upload support
-- Curriculum-aligned content
-
-### 📈 **Advanced Analytics Dashboard**
-
-- Syllabus coverage tracking
-- Study streak monitoring
-- Class rank and performance insights
-- Weekly study hours analysis
-- Progress trend visualization
-
-### 📚 **Comprehensive Resource Library**
-
-- Previous year question papers
-- Important questions compilation
-- Curated study resources
-- Board-specific materials
+| Feature                               | Description                                                                                                                                |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 🤖 **Textbook-Grounded AI Chatbot**   | Answers questions directly from official textbooks; no external solution books needed; context-aware responses based on curriculum content |
+| 📝 **Intelligent Quiz Generator**     | AI-powered quiz creation from study material; supports easy, medium, hard levels; personalized for exam prep                               |
+| 🎙️ **Voice Learning Agent**           | Natural conversation with textbooks; voice-based learning for accessibility; interactive study sessions                                    |
+| 📊 **Multi-Board Support**            | Covers CBSE, ICSE, TN Matric boards; custom textbook upload; curriculum-aligned content                                                    |
+| 📈 **Advanced Analytics Dashboard**   | Tracks syllabus coverage, study streaks, class rank, weekly study hours, and progress trends                                               |
+| 📚 **Comprehensive Resource Library** | Previous year papers, important questions, curated resources, board-specific materials                                                     |
 
 ---
 
 ## 🎯 Problems We Solve
+
+<div align="center">
 
 | Problem                                 | StudySnap Solution                                          |
 | --------------------------------------- | ----------------------------------------------------------- |
@@ -75,6 +37,8 @@ StudySnap is a revolutionary AI-powered learning platform designed to support bo
 | **Expensive Digital Platforms**         | Affordable, scalable solution for all institutions          |
 | **Lack of Personalized Tracking**       | Comprehensive analytics and progress insights               |
 | **Limited Infrastructure Access**       | Lightweight, cloud-based platform with offline capabilities |
+
+</div>
 
 ---
 
@@ -99,32 +63,13 @@ graph TB
 
 ### Tech Stack
 
-#### **Frontend**
+|                                                             **Programming Languages**                                                              |                                                                                           **Web Development**                                                                                            |                                                             **Databases & Tools**                                                              |                               **AI/ML & Data Science**                               |
+| :------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
+| ![Python](https://skillicons.dev/icons?i=python) ![JavaScript](https://skillicons.dev/icons?i=js) ![TypeScript](https://skillicons.dev/icons?i=ts) | ![React](https://skillicons.dev/icons?i=react) ![Next.js](https://skillicons.dev/icons?i=nextjs) ![Express](https://skillicons.dev/icons?i=express) ![Tailwind](https://skillicons.dev/icons?i=tailwind) | ![MongoDB](https://skillicons.dev/icons?i=mongodb) ![Git](https://skillicons.dev/icons?i=git) ![Vercel](https://skillicons.dev/icons?i=vercel) | ![Python](https://skillicons.dev/icons?i=python) **Cerebras** 🔎 Custom RAG Pipeline |
 
-- **Next.js 15.5.4** - React framework with SSR/SSG
-- **React 19.1.0** - UI component library
-- **Tailwind CSS** - Utility-first CSS framework
-- **TypeScript** - Type-safe development
-- **Framer Motion** - Animation library
-- **Radix UI** - Accessible component primitives
-
-#### **Backend**
-
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web application framework
-- **MongoDB** - NoSQL database
-- **JWT** - Authentication and authorization
-
-#### **AI/ML**
-
-- **Cerebras** - AI model integration and optimization
-- **Custom RAG Pipeline** - Retrieval-Augmented Generation
-
-#### **DevOps & Deployment**
-
-- **Docker** - Containerization
-- **Vercel** - Frontend deployment
-- **Git** - Version control
+|                                   **DevOps & Infrastructure**                                   |                                  **Design & Development Tools**                                  |                                       **Operating Systems**                                       |
+| :---------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: |
+| ![Docker](https://skillicons.dev/icons?i=docker) ![Linux](https://skillicons.dev/icons?i=linux) | ![VS Code](https://skillicons.dev/icons?i=vscode) ![Figma](https://skillicons.dev/icons?i=figma) | ![Linux](https://skillicons.dev/icons?i=linux) ![Windows](https://skillicons.dev/icons?i=windows) |
 
 ---
 
@@ -351,90 +296,22 @@ We welcome contributions from the community! Here's how you can help:
 ---
 
 ## 🌟 Roadmap
-
-### Phase 1 (Current)
-
-- [x] AI-powered chatbot with textbook grounding
-- [x] Quiz generation system
-- [x] Multi-board support (CBSE, ICSE, TN Matric)
-- [x] Analytics dashboard
-- [x] Voice learning agent
-
-### Phase 2 (Q2 2025)
-
-- [ ] Mobile app with React Native
-- [ ] Offline mode for low-infrastructure areas
-- [ ] Advanced gamification features
-- [ ] Teacher dashboard and classroom management
-
-### Phase 3 (Q3-Q4 2025)
-
-- [ ] Multi-language support
-- [ ] Regional board expansion
-- [ ] AI-powered study plan generation
-- [ ] Integration with LMS platforms
-- [ ] Advanced analytics and insights
-
-### Phase 4 (2026)
-
-- [ ] AR/VR learning experiences
-- [ ] Peer-to-peer learning features
-- [ ] Marketplace for educational content
-- [ ] White-label solutions for institutions
+| Phase                | Timeline         | Features                                                                                                                                           | Status      |
+|----------------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| **Phase 1 (Current)**| Q1 2025          | - AI-powered chatbot with textbook grounding<br>- Quiz generation system<br>- Multi-board support (CBSE, ICSE, TN Matric)<br>- Analytics dashboard<br>- Voice learning agent | ✅ Completed |
+| **Phase 2**          | Q2 2025          | - Mobile app with React Native<br>- Offline mode for low-infrastructure areas<br>- Advanced gamification features<br>- Teacher dashboard and classroom management | ⏳ Upcoming  |
+| **Phase 3**          | Q3–Q4 2025       | - Multi-language support<br>- Regional board expansion<br>- AI-powered study plan generation<br>- Integration with LMS platforms<br>- Advanced analytics and insights | ⏳ Upcoming  |
+| **Phase 4**          | 2026             | - AR/VR learning experiences<br>- Peer-to-peer learning features<br>- Marketplace for educational content<br>- White-label solutions for institutions | ⏳ Upcoming  |
 
 ---
-
-## 🏆 Achievements
-
-- 🥇 **FutureStack Gen AI Hackathon** - Finalist
-- 🌟 **Cerebras Integration** - Optimized AI model performance
-- 📈 **User Growth** - Serving 1000+ students across multiple boards
-- 🎓 **Educational Impact** - 95% improvement in quiz scores
-
----
-
-## 📈 Analytics & Metrics
-
-### Performance Metrics
-
-- **Response Time**: < 200ms for chatbot queries
-- **Uptime**: 99.9% availability
-- **User Satisfaction**: 4.8/5 star rating
-- **Quiz Accuracy**: 95% relevance to curriculum
-
-### Usage Statistics
-
-- **Active Users**: 1,000+ students
-- **Questions Answered**: 50,000+ chatbot interactions
-- **Quizzes Generated**: 10,000+ personalized quizzes
-- **Study Hours Tracked**: 100,000+ hours
-
----
-
-## 🛡️ Security & Privacy
-
-- **Data Encryption**: All data encrypted in transit and at rest
-- **Privacy Compliance**: GDPR and COPPA compliant
-- **Secure Authentication**: JWT-based secure user sessions
-- **Content Filtering**: AI-powered inappropriate content detection
-
----
-
 ## 📞 Support & Community
 
 ### Get Help
 
-- 📚 [Documentation](https://docs.studysnap.ai)
+- 💼 [LinkedIn](https://www.linkedin.com/in/girish-gaikwad2055)
 - 💬 [Discord Community](https://discord.gg/studysnap)
-- 📧 [Email Support](mailto:support@studysnap.ai)
+- 📧 [Email Support](mailto:girishgaikwad2055@gmail.com)
 - 🐛 [Report Issues](https://github.com/girish-gaikwad/FutureStack_genAI_Hackathon/issues)
-
-### Community Guidelines
-
-- Be respectful and inclusive
-- Help others learn and grow
-- Share knowledge and resources
-- Follow our Code of Conduct
 
 ---
 
@@ -464,15 +341,16 @@ copies or substantial portions of the Software.
 
 ### Special Thanks
 
-- **FutureStack Hackathon** organizers for the platform
+- **FutureStack AI Hackathon** organizering the this Event
 - **Cerebras** for AI model optimization support
-- **Vercel** for seamless deployment experience
+- **Docker** for containerization and easy deployment
+- **Meta** for open-source contributions and developer resources
 - **Open Source Community** for incredible tools and libraries
 
 ### Built With Love By
 
 - **[Girish Gaikwad](https://github.com/girish-gaikwad)** - Full Stack Developer & AI Engineer
-- **StudySnap Team** - Passionate educators and developers
+- **[Navani](https://github.com/Navani001)** - Full Stack Developer & AI Engineer
 
 ### Inspiration
 
