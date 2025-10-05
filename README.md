@@ -65,11 +65,11 @@ graph TB
 
 |                                                             **Programming Languages**                                                              |                                                                                           **Web Development**                                                                                            |                                                             **Databases & Tools**                                                              |                               **AI/ML & Data Science**                               |
 | :------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
-| ![Python](https://skillicons.dev/icons?i=python) ![JavaScript](https://skillicons.dev/icons?i=js) ![TypeScript](https://skillicons.dev/icons?i=ts) | ![React](https://skillicons.dev/icons?i=react) ![Next.js](https://skillicons.dev/icons?i=nextjs) ![Express](https://skillicons.dev/icons?i=express) ![Tailwind](https://skillicons.dev/icons?i=tailwind) | ![MongoDB](https://skillicons.dev/icons?i=mongodb) ![Git](https://skillicons.dev/icons?i=git) ![Vercel](https://skillicons.dev/icons?i=vercel) | ![Python](https://skillicons.dev/icons?i=python) **Cerebras** 🔎 Custom RAG Pipeline |
+| ![Python](https://skillicons.dev/icons?i=python) ![JavaScript](https://skillicons.dev/icons?i=js) ![TypeScript](https://skillicons.dev/icons?i=ts) | ![React](https://skillicons.dev/icons?i=react) ![Next.js](https://skillicons.dev/icons?i=nextjs) ![FastApi](https://skillicons.dev/icons?i=fastapi) ![Tailwind](https://skillicons.dev/icons?i=tailwind) | ![MongoDB](https://skillicons.dev/icons?i=mongodb) ![Git](https://skillicons.dev/icons?i=git) ![Vercel](https://skillicons.dev/icons?i=vercel) | ![Python](https://skillicons.dev/icons?i=python) <img src="https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/cerebras-color.png" alt="Cerebras" width="50" height="50" style="border-radius:8px;" /> <img src="https://tse4.mm.bing.net/th/id/OIP.MWUc4ETDwppko2xArPTStwHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Cerebras" width="50" height="50" style="border-radius:8px;" />  <img src="https://tse3.mm.bing.net/th/id/OIP.IuMxby4kKyrhNP4I6ANGygAAAA?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Cerebras" width="50" height="50" style="border-radius:8px;" /> <img src="https://tse1.mm.bing.net/th/id/OIP.dIiAlq1gr59JEXq0qq8sjgHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Cerebras"  width="50" height="50" style="border-radius:8px;" />  |
 
 |                                   **DevOps & Infrastructure**                                   |                                  **Design & Development Tools**                                  |                                       **Operating Systems**                                       |
 | :---------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: |
-| ![Docker](https://skillicons.dev/icons?i=docker) ![Linux](https://skillicons.dev/icons?i=linux) | ![VS Code](https://skillicons.dev/icons?i=vscode) ![Figma](https://skillicons.dev/icons?i=figma) | ![Linux](https://skillicons.dev/icons?i=linux) ![Windows](https://skillicons.dev/icons?i=windows) |
+| ![Docker](https://skillicons.dev/icons?i=docker) <img src="https://miro.medium.com/v2/resize:fit:1024/1*z6ZJQXsdARI0ojY-AlGhZA.png" alt="Cerebras"  width="50" height="50" style="border-radius:8px;" /> ![Linux](https://skillicons.dev/icons?i=linux) | ![VS Code](https://skillicons.dev/icons?i=vscode) ![Figma](https://skillicons.dev/icons?i=figma) | ![Linux](https://skillicons.dev/icons?i=linux) ![Windows](https://skillicons.dev/icons?i=windows) |
 
 ---
 
@@ -77,7 +77,8 @@ graph TB
 
 ```
 studysnap/
-├── 📁 backend/                 # Backend services
+├── 📁 backend/                # Backend services
+│   ├── 📁 book/               # Add Books here
 │   ├── agent.py               # AI agent implementation
 │   ├── app.py                 # Main Flask/FastAPI application
 │   ├── config.py              # Configuration settings
@@ -153,27 +154,42 @@ Before you begin, ensure you have the following installed:
 
    ```bash
    cd backend
+   python -m venv venv
+   /venv/Scripts/Activate
    pip install -r requirements_rag.txt
    cd ..
    ```
 
 4. **Environment Configuration**
+
    Create a `.env.local` file in the root directory:
 
    ```env
-   # Database
-   MONGODB_URI=your_mongodb_connection_string
-
-   # Authentication
-   JWT_SECRET=your_jwt_secret_key
-
-   # AI Services
-   CEREBRAS_API_KEY=your_cerebras_api_key
-   PINECONE_API_KEY=your_pinecone_api_key
-   PINECONE_INDEX_NAME=your_pinecone_index
-
-   # Other APIs
+   LIVEKIT_API_KEY=YOUR_LIVEKIT_API_KEY_HERE
+   LIVEKIT_API_SECRET=YOUR_LIVEKIT_API_SECRET_HERE
+   LIVEKIT_URL=YOUR_LIVEKIT_URL_HERE
    NEXT_PUBLIC_API_URL=http://localhost:3000/api
+   ```
+    Create a `.env.local` file in the ./Backend directory:
+
+   ```env
+   MONGODB_URI=your_mongodb_connection_string
+   PINECONE_API_KEY=your-pinecone-api-key-here
+   PINECONE_INDEX_NAME=document-collection
+   PINECONE_DIMENSION=384
+   EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+   LIVEKIT_API_KEY=your-livekit-api-key
+   LIVEKIT_API_SECRET=your-livekit-secret
+   LIVEKIT_URL=wss://your-livekit-url
+   DEEPGRAM_API_KEY=your-deepgram-api-key
+   HF_TOKEN=your-huggingface-token
+   HF_CACHE_DIR=./hf_cache
+   CEREBRAS_API_KEY=your-cerebras-api-key
+   SECRET_KEY=change-me-in-production
+   JWT_SECRET_KEY=change-me-in-production
+   DATABASE_URL=sqlite:///app.db
+   FLASK_ENV=development
+   PORT=7860
    ```
 
 5. **Start the development servers**
@@ -225,19 +241,67 @@ docker-compose up --build
 
 ### 1. **Chatbot Interaction**
 
+Below is an example of how to call the FastAPI RAG backend's `/query` endpoint. The server expects a JSON body with the following shape:
+
+- `query` (string) - the user's question or prompt
+- `book` (string, optional) - an optional book filter
+- `message` (array of role/content objects, optional) - an optional chat history to include
+- `n_results` (number, optional) - how many matching document chunks to fetch
+
+Example request (browser / Node):
+
 ```javascript
-// Example API call to chatbot
-const response = await fetch("/api/chat", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    message: "Explain photosynthesis from Chapter 6",
-    board: "CBSE",
-    subject: "Biology",
-    class: "10",
-  }),
+// POST /query example
+const payload = {
+   query: "Explain photosynthesis from Chapter 6",
+   book: "Biology Textbook - Class 10",
+   message: [
+      { role: "system", content: "You are a helpful assistant for educational books." },
+      { role: "user", content: "Summarize the key points on photosynthesis." }
+   ],
+   n_results: 3
+};
+
+const res = await fetch("/api/query", {
+   method: "POST",
+   headers: { "Content-Type": "application/json" },
+   body: JSON.stringify(payload)
 });
+
+const data = await res.json();
+console.log(data);
 ```
+
+Typical successful response shape:
+
+```json
+{
+   "message": "<assistant generated answer string>",
+   "sources": [
+      { "id": "vec-id-1", "book": "Biology Textbook - Class 10", "page": 42, "score": 0.93 },
+      ...
+   ],
+   "available_books": ["Biology Textbook - Class 10", "Chemistry Textbook - Class 10"],
+   "query_book_filter": "Biology Textbook - Class 10"
+}
+```
+
+If you want to generate quizzes from the indexed books, use the `/quizz` endpoint with the following body:
+
+```javascript
+// POST /quizz example
+const quizPayload = { book: "Biology Textbook - Class 10", n_results: 5, question: 10 };
+const quizRes = await fetch('/api/quizz', {
+   method: 'POST',
+   headers: { 'Content-Type': 'application/json' },
+   body: JSON.stringify(quizPayload)
+});
+const quizData = await quizRes.json();
+console.log(quizData);
+```
+
+The `/quizz` response contains a JSON-schema validated quiz in `message`, the `available_books` list and the `query_book_filter` used.
+
 
 ### 2. **Quiz Generation**
 
@@ -350,7 +414,7 @@ copies or substantial portions of the Software.
 ### Built With Love By
 
 - **[Girish Gaikwad](https://github.com/girish-gaikwad)** - Full Stack Developer & AI Engineer
-- **[Navani](https://github.com/Navani001)** - Full Stack Developer & AI Engineer
+- **[Navani_hk](https://github.com/Navani001)** - Full Stack Developer & AI Engineer
 
 ### Inspiration
 
